@@ -56,6 +56,9 @@ class RoutingUnit
     int outportCompute(RouteInfo route,
                       int inport,
                       PortDirection inport_dirn);
+    std::vector < int > outportsCompute(RouteInfo route,
+                                  int inport,
+                                  PortDirection inport_dirn);
 
     // Topology-agnostic Routing Table based routing (default)
     void addRoute(std::vector<NetDest>& routing_table_entry);
@@ -72,12 +75,24 @@ class RoutingUnit
     int outportComputeXY(RouteInfo route,
                          int inport,
                          PortDirection inport_dirn);
-
+    // Routing for Ring
+    int outportComputeLFT(RouteInfo route,
+                          int inport);
     // Custom Routing Algorithm using Port Directions
     int outportComputeCustom(RouteInfo route,
                              int inport,
                              PortDirection inport_dirn);
-
+    // Turn Model Routing for Mesh
+    std::vector < int > outportsComputeSouthLast(RouteInfo route,
+                                int inport,
+                                PortDirection inport_dirn);
+    // Long Range Turn Model Routing for Mesh_longrange
+    std::vector < int > outportsComputeLongRange(RouteInfo route,
+                                int inport,
+                                PortDirection inport_dirn);
+    std::pair<int, int> computeDestWithOutputDirn(PortDirection outport_dirn);
+    bool sendAllowedLongRange(PortDirection input_dirn,
+                                                PortDirection output_dirn);
     // Returns true if vnet is present in the vector
     // of vnets or if the vector supports all vnets.
     bool supportsVnet(int vnet, std::vector<int> sVnets);

@@ -240,8 +240,11 @@ def create_system(
 
     if cpus is None:
         cpus = system.cpu
-
     protocol = buildEnv["PROTOCOL"]
+#    print(f"Using Ruby memory system with protocol {protocol}")
+    # protocol = Garnet_standalone
+    from . import Garnet_standalone
+
     exec(f"from . import {protocol}")
     try:
         (cpu_sequencers, dir_cntrls, topology) = eval(

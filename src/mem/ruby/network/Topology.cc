@@ -63,6 +63,7 @@ Topology::Topology(uint32_t num_nodes, uint32_t num_routers,
 {
     // Total nodes/controllers in network
     assert(m_nodes > 1);
+    printf("m_nodes: %d\n", m_nodes);
 
     // analyze both the internal and external links, create data structures.
     // The python created external links are bi-directional,

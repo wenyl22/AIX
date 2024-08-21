@@ -123,17 +123,35 @@ SwitchAllocator::arbitrate_inports()
 
                 int outport = input_unit->get_outport(invc);
                 int outvc = input_unit->get_outvc(invc);
+                // wormhole needs to compute outvc for each flit
+                //even if they are in a same VC
+                if (m_router->get_net_ptr()->getWormholeEnabled()) {
+                    if (m_router->get_net_ptr()->getAdaptiveRoutingEnabled()) {
+                        std::vector < int > outports = m_router->routes_compute(input_unit->peekTopFlit(invc)->get_route(), inport, input_unit->get_direction());
+                        assert(outports.size() > 0);
+                        outport = outports[0];
+                        // If there are two choices, select the one with minimal congestion
+                        if (outports.size() == 2) {
+                            if(m_router->getOutputUnit(outports[1])->get_credit_count(invc) 
+                            > m_router->getOutputUnit(outports[0])->get_credit_count(invc) + 8)
+                                outport = outports[1];
+                        }
 
+                    } else {
+                        outport = m_router->route_compute(input_unit->peekTopFlit(invc)->get_route(), inport, input_unit->get_direction());
+                    }
+                    outvc = invc;
+                }
                 // check if the flit in this InputVC is allowed to be sent
                 // send_allowed conditions described in that function.
                 bool make_request =
                     send_allowed(inport, invc, outport, outvc);
+                // printf("send_allowed = %d\n", make_request);
 
                 if (make_request) {
                     m_input_arbiter_activity++;
                     m_port_requests[inport] = outport;
                     m_vc_winners[inport] = invc;
-
                     break; // got one vc winner for this port
                 }
             }
@@ -168,8 +186,7 @@ SwitchAllocator::arbitrate_outports()
     for (int outport = 0; outport < m_num_outports; outport++) {
         int inport = m_round_robin_inport[outport];
 
-        for (int inport_iter = 0; inport_iter < m_num_inports;
-                 inport_iter++) {
+        for (int inport_iter = 0; inport_iter < m_num_inports; inport_iter++) {
 
             // inport has a request this cycle for outport
             if (m_port_requests[inport] == outport) {
@@ -180,9 +197,14 @@ SwitchAllocator::arbitrate_outports()
                 int invc = m_vc_winners[inport];
 
                 int outvc = input_unit->get_outvc(invc);
-                if (outvc == -1) {
-                    // VC Allocation - select any free VC from outport
-                    outvc = vc_allocate(outport, inport, invc);
+                if (m_router->get_net_ptr()->getWormholeEnabled()) {
+                    outvc = vc_allocate_wormhole(outport, inport, invc);
+
+                } else {
+                    if (outvc == -1) {
+                        // VC Allocation - select any free VC from outport
+                        outvc = vc_allocate(outport, inport, invc);
+                    }
                 }
 
                 // remove flit from Input VC
@@ -201,7 +223,6 @@ SwitchAllocator::arbitrate_outports()
                             *t_flit,
                         m_router->curCycle());
 
-
                 // Update outport field in the flit since this is
                 // used by CrossbarSwitch code to send it out of
                 // correct outport.
@@ -215,28 +236,36 @@ SwitchAllocator::arbitrate_outports()
 
                 // decrement credit in outvc
                 output_unit->decrement_credit(outvc);
+                if (output_unit->get_credit_count(outvc) == 0) {
+                    // If no more credits, then this VC is active
+                    output_unit->set_vc_state(ACTIVE_, outvc, curTick());
+                }
 
                 // flit ready for Switch Traversal
                 t_flit->advance_stage(ST_, curTick());
                 m_router->grant_switch(inport, t_flit);
                 m_output_arbiter_activity++;
-
-                if ((t_flit->get_type() == TAIL_) ||
-                    t_flit->get_type() == HEAD_TAIL_) {
-
-                    // This Input VC should now be empty
-                    assert(!(input_unit->isReady(invc, curTick())));
-
-                    // Free this VC
-                    input_unit->set_vc_idle(invc, curTick());
-
-                    // Send a credit back
-                    // along with the information that this VC is now idle
-                    input_unit->increment_credit(invc, true, curTick());
-                } else {
-                    // Send a credit back
-                    // but do not indicate that the VC is idle
+                if (m_router->get_net_ptr()->getWormholeEnabled()) {
+                    assert(t_flit->get_type() == HEAD_TAIL_);
                     input_unit->increment_credit(invc, false, curTick());
+                    input_unit->set_vc_idle(invc, curTick());
+                } else {
+                    if ((t_flit->get_type() == TAIL_) || t_flit->get_type() == HEAD_TAIL_) {
+
+                        // This Input VC should now be empty
+                        assert(!(input_unit->isReady(invc, curTick())));
+
+                        // Free this VC
+                        input_unit->set_vc_idle(invc, curTick());
+
+                        // Send a credit back
+                        // along with the information that this VC is now idle
+                        input_unit->increment_credit(invc, true, curTick());
+                    } else {
+                        // Send a credit back
+                        // but do not indicate that the VC is idle
+                        input_unit->increment_credit(invc, false, curTick());
+                    }
                 }
 
                 // remove this request
@@ -292,21 +321,26 @@ SwitchAllocator::send_allowed(int inport, int invc, int outport, int outvc)
     bool has_credit = false;
 
     auto output_unit = m_router->getOutputUnit(outport);
-    if (!has_outvc) {
-
-        // needs outvc
-        // this is only true for HEAD and HEAD_TAIL flits.
-
-        if (output_unit->has_free_vc(vnet)) {
-
-            has_outvc = true;
-
-            // each VC has at least one buffer,
-            // so no need for additional credit check
-            has_credit = true;
-        }
+    if (m_router->get_net_ptr()->getWormholeEnabled()) {
+        has_outvc = true;
+        has_credit = (output_unit->get_credit_count(outvc));
     } else {
-        has_credit = output_unit->has_credit(outvc);
+        if (!has_outvc) {
+
+            // needs outvc
+            // this is only true for HEAD and HEAD_TAIL flits.
+
+            if (output_unit->has_free_vc(vnet)) {
+
+                has_outvc = true;
+
+                // each VC has at least one buffer,
+                // so no need for additional credit check
+                has_credit = true;
+            }
+        } else {
+            has_credit = output_unit->has_credit(outvc);
+        }
     }
 
     // cannot send if no outvc or no credit.
@@ -348,6 +382,16 @@ SwitchAllocator::vc_allocate(int outport, int inport, int invc)
     // has to get a valid VC since it checked before performing SA
     assert(outvc != -1);
     m_router->getInputUnit(inport)->grant_outvc(invc, outvc);
+    return outvc;
+}
+
+int
+SwitchAllocator::vc_allocate_wormhole(int outport, int inport, int invc)
+{
+    // Select a free VC from the output port
+    int outvc = invc;
+    // has to get a valid VC since it checked before performing SA
+    assert(outvc != -1);
     return outvc;
 }
 

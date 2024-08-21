@@ -156,6 +156,8 @@ class GarnetNetwork : public Network
 
     void update_traffic_distribution(RouteInfo route);
     int getNextPacketID() { return m_next_packet_id++; }
+    bool getWormholeEnabled() { return m_enable_wormhole; }
+    bool getAdaptiveRoutingEnabled() { return m_enable_adaptive_routing; }
 
   protected:
     // Configuration
@@ -167,6 +169,8 @@ class GarnetNetwork : public Network
     uint32_t m_buffers_per_data_vc;
     int m_routing_algorithm;
     bool m_enable_fault_model;
+    bool m_enable_wormhole;
+    bool m_enable_adaptive_routing;
 
     // Statistical variables
     statistics::Vector m_packets_received;
@@ -195,6 +199,7 @@ class GarnetNetwork : public Network
     statistics::Scalar m_total_ext_out_link_utilization;
     statistics::Scalar m_total_int_link_utilization;
     statistics::Scalar m_average_link_utilization;
+    statistics::Formula m_received_packets_per_cpu;
     statistics::Vector m_average_vc_load;
 
     statistics::Scalar  m_total_hops;

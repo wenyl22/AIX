@@ -38,6 +38,7 @@
 #include "mem/ruby/network/garnet/InputUnit.hh"
 #include "mem/ruby/network/garnet/NetworkLink.hh"
 #include "mem/ruby/network/garnet/OutputUnit.hh"
+#include "Router.hh"
 
 namespace gem5
 {
@@ -57,6 +58,7 @@ Router::Router(const Params &p)
 {
     m_input_unit.clear();
     m_output_unit.clear();
+    longLinkId = p.longLinkId;
 }
 
 void
@@ -161,7 +163,15 @@ Router::getInportDirection(int inport)
 int
 Router::route_compute(RouteInfo route, int inport, PortDirection inport_dirn)
 {
+    assert(!m_network_ptr->getAdaptiveRoutingEnabled());
     return routingUnit.outportCompute(route, inport, inport_dirn);
+}
+
+std::vector< int >
+Router::routes_compute(RouteInfo route, int inport, PortDirection inport_dirn)
+{
+    assert(m_network_ptr->getAdaptiveRoutingEnabled());
+    return routingUnit.outportsCompute(route, inport, inport_dirn);
 }
 
 void

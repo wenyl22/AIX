@@ -117,6 +117,7 @@ class Router : public BasicRouter, public Consumer
     PortDirection getInportDirection(int inport);
 
     int route_compute(RouteInfo route, int inport, PortDirection direction);
+    std::vector<int> routes_compute(RouteInfo route, int inport, PortDirection inport_dirn);
     void grant_switch(int inport, flit *t_flit);
     void schedule_wakeup(Cycles time);
 
@@ -142,6 +143,7 @@ class Router : public BasicRouter, public Consumer
     bool functionalRead(Packet *pkt, WriteMask &mask);
     uint32_t functionalWrite(Packet *);
 
+    int longLinkId;
   private:
     Cycles m_latency;
     uint32_t m_virtual_networks, m_vc_per_vnet, m_num_vcs;

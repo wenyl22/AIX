@@ -51,6 +51,8 @@ class GarnetNetwork(RubyNetwork):
     garnet_deadlock_threshold = Param.UInt32(
         50000, "network-level deadlock threshold"
     )
+    wormhole = Param.Bool(False, "enable wormhole routing")
+    adaptive_routing = Param.Bool(False, "enable adaptive routing")
 
 
 class GarnetNetworkInterface(ClockedObject):

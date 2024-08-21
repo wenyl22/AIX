@@ -71,6 +71,11 @@ GarnetNetwork::GarnetNetwork(const Params &p)
     m_buffers_per_ctrl_vc = p.buffers_per_ctrl_vc;
     m_routing_algorithm = p.routing_algorithm;
     m_next_packet_id = 0;
+    m_enable_wormhole = p.wormhole;
+    m_enable_adaptive_routing = p.adaptive_routing;
+    printf("buffers_per_data_vc: %d\n", m_buffers_per_data_vc);
+    printf("wormhole: %d\n", m_enable_wormhole);
+    printf("adaptive_routing: %d\n", m_enable_adaptive_routing);
 
     m_enable_fault_model = p.enable_fault_model;
     if (m_enable_fault_model)
@@ -507,6 +512,10 @@ GarnetNetwork::regStats()
     m_avg_flit_latency =
         m_avg_flit_network_latency + m_avg_flit_queueing_latency;
 
+    m_received_packets_per_cpu
+        .name(name() + ".received_packets_per_cpu");
+    m_received_packets_per_cpu = 
+        sum(m_packets_received)/ getNumRouters();
 
     // Hops
     m_avg_hops.name(name() + ".average_hops");

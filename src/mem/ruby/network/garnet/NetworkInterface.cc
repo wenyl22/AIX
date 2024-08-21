@@ -85,6 +85,7 @@ NetworkInterface::addOutPort(NetworkLink *out_link,
                              CreditLink *credit_link,
                              SwitchID router_id, uint32_t consumerVcs)
 {
+    // consumerVcs = vcs per vnet
     OutputPort *newOutPort = new OutputPort(out_link, credit_link, router_id);
     outPorts.push_back(newOutPort);
 
@@ -225,6 +226,7 @@ NetworkInterface::wakeup()
 
     /*********** Check the incoming flit link **********/
     DPRINTF(RubyNetwork, "Number of input ports: %d\n", inPorts.size());
+    //printf("Number of input ports: %d\n", inPorts.size());
     for (auto &iPort: inPorts) {
         NetworkLink *inNetLink = iPort->inNetLink();
         if (inNetLink->isReady(curTick())) {
@@ -287,9 +289,10 @@ NetworkInterface::wakeup()
         if (inCreditLink->isReady(curTick())) {
             Credit *t_credit = (Credit*) inCreditLink->consumeLink();
             outVcState[t_credit->get_vc()].increment_credit();
-            if (t_credit->is_free_signal()) {
-                outVcState[t_credit->get_vc()].setState(IDLE_,
-                    curTick());
+            if(m_net_ptr->getWormholeEnabled()) {
+                outVcState[t_credit->get_vc()].setState(IDLE_, curTick());
+           } else if (t_credit->is_free_signal()) {
+                outVcState[t_credit->get_vc()].setState(IDLE_, curTick());
             }
             delete t_credit;
         }
@@ -450,7 +453,11 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
         }
 
         m_ni_out_vcs_enqueue_time[vc] = curTick();
-        outVcState[vc].setState(ACTIVE_, curTick());
+        if(m_net_ptr->getWormholeEnabled()) {
+            // do nothing
+        } else {
+            outVcState[vc].setState(ACTIVE_, curTick());
+        }
     }
     return true ;
 }
@@ -465,8 +472,7 @@ NetworkInterface::calculateVC(int vnet)
         if (m_vc_allocator[vnet] == m_vc_per_vnet)
             m_vc_allocator[vnet] = 0;
 
-        if (outVcState[(vnet*m_vc_per_vnet) + delta].isInState(
-                    IDLE_, curTick())) {
+        if (outVcState[(vnet*m_vc_per_vnet) + delta].isInState(IDLE_, curTick())) {
             vc_busy_counter[vnet] = 0;
             return ((vnet*m_vc_per_vnet) + delta);
         }
@@ -519,6 +525,8 @@ NetworkInterface::scheduleOutputPort(OutputPort *oPort)
                oPort->vcRoundRobin(vc);
 
                outVcState[vc].decrement_credit();
+               if (outVcState[vc].get_credit_count() == 0)
+                    outVcState[vc].setState(ACTIVE_, curTick());
 
                // Just removing the top flit
                flit *t_flit = niOutVcs[vc].getTopFlit();

@@ -86,24 +86,26 @@ InputUnit::wakeup()
         assert(t_flit->m_width == m_router->getBitWidth());
         int vc = t_flit->get_vc();
         t_flit->increment_hops(); // for stats
-
-        if ((t_flit->get_type() == HEAD_) ||
-            (t_flit->get_type() == HEAD_TAIL_)) {
-
-            assert(virtualChannels[vc].get_state() == IDLE_);
-            set_vc_active(vc, curTick());
-
-            // Route computation for this vc
-            int outport = m_router->route_compute(t_flit->get_route(),
-                m_id, m_direction);
-
-            // Update output port in VC
-            // All flits in this packet will use this output port
-            // The output port field in the flit is updated after it wins SA
-            grant_outport(vc, outport);
-
+        if (m_router->get_net_ptr()->getWormholeEnabled()) {
+            assert(t_flit->get_type() == HEAD_TAIL_);
         } else {
-            assert(virtualChannels[vc].get_state() == ACTIVE_);
+            if ((t_flit->get_type() == HEAD_) ||
+                (t_flit->get_type() == HEAD_TAIL_)) {
+                assert(virtualChannels[vc].get_state() == IDLE_);
+                set_vc_active(vc, curTick());
+
+                // Route computation for this vc
+                int outport = m_router->route_compute(t_flit->get_route(),
+                    m_id, m_direction);
+
+                // Update output port in VC
+                // All flits in this packet will use this output port
+                // The output port field in the flit is updated after it wins SA
+                grant_outport(vc, outport);
+
+            } else {
+                assert(virtualChannels[vc].get_state() == ACTIVE_);
+            }
         }
 
 

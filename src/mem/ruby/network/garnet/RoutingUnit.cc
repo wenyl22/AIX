@@ -193,8 +193,9 @@ RoutingUnit::outportCompute(RouteInfo route, int inport,
         // any custom algorithm
         case CUSTOM_: outport =
             outportComputeCustom(route, inport, inport_dirn); break;
-        default: outport =
-            lookupRoutingTable(route.vnet, route.net_dest); break;
+        case LFT_:    outport =
+            outportComputeLFT(route, inport); break;
+        default: panic("Unknown non-adaptive routing algorithm\n");
     }
 
     assert(outport != -1);
@@ -258,6 +259,166 @@ RoutingUnit::outportComputeXY(RouteInfo route,
     }
 
     return m_outports_dirn2idx[outport_dirn];
+}
+
+// LFT routing
+int
+RoutingUnit::outportComputeLFT(RouteInfo route, int inport)
+{
+    return m_outports_dirn2idx["West"];
+}
+
+std::vector < int >
+RoutingUnit::outportsCompute(RouteInfo route,
+                             int inport,
+                             PortDirection inport_dirn)
+{
+    int outport = -1;
+    if (route.dest_router == m_router->get_id()) {
+        outport = lookupRoutingTable(route.vnet, route.net_dest);
+        return std::vector< int >(1, outport);
+    }
+    RoutingAlgorithm routing_algorithm =
+        (RoutingAlgorithm) m_router->get_net_ptr()->getRoutingAlgorithm();
+    std::vector < int > outports;
+    switch (routing_algorithm) {
+        case SOUTHLAST_:  outports =
+            outportsComputeSouthLast(route, inport, inport_dirn); break;
+        case LONGRANGE_:  outports =
+            outportsComputeLongRange(route, inport, inport_dirn); break;
+        default: panic("Unknown adaptive routing algorithm\n");
+    }
+    return outports;
+}
+
+// South-Last routing
+std::vector < int >
+RoutingUnit::outportsComputeSouthLast(RouteInfo route,
+                                     int inport,
+                                     PortDirection inport_dirn)
+{
+    PortDirection outport_dirn = "Unknown";
+
+    [[maybe_unused]] int num_rows = m_router->get_net_ptr()->getNumRows();
+    int num_cols = m_router->get_net_ptr()->getNumCols();
+    assert(num_rows > 0 && num_cols > 0);
+
+    int my_id = m_router->get_id();
+    int my_x = my_id % num_cols;
+    int my_y = my_id / num_cols;
+
+    int dest_id = route.dest_router;
+    int dest_x = dest_id % num_cols;
+    int dest_y = dest_id / num_cols;
+
+    int x_hops = abs(dest_x - my_x);
+    int y_hops = abs(dest_y - my_y);
+
+    bool x_dirn = (dest_x >= my_x);
+    bool y_dirn = (dest_y >= my_y);
+    std::vector < int > outports;
+    // for (int i = 0; i < m_outports_dirn2idx.size();++i)
+    //     assert(m_outports_dirn2idx[m_outports_idx2dirn[i]] == i);
+    if (inport_dirn == "North") {
+        outports.push_back(m_outports_dirn2idx["South"]);
+    } else {
+        if (x_hops > 0) {
+            if (x_dirn) {
+                outports.push_back(m_outports_dirn2idx["East"]);
+            } else {
+                outports.push_back(m_outports_dirn2idx["West"]);
+            }
+        }
+        if (y_hops > 0) {
+            if (y_dirn) {
+                outports.push_back(m_outports_dirn2idx["North"]);
+            } else if(x_hops == 0) {
+                outports.push_back(m_outports_dirn2idx["South"]);
+            }
+        }
+    }
+    assert(outports.size());
+    // for (int i = 0; i < outports.size(); i++) {
+    //     std::cout << "outport: " << m_outports_idx2dirn[outports[i]] << std::endl;
+    // }
+    return outports;
+}
+
+bool 
+RoutingUnit::sendAllowedLongRange(PortDirection inport_dirn, 
+                                    PortDirection outport_dirn) {
+    bool ret = true;
+    if (inport_dirn == "NorthWest" || inport_dirn == "NorthEast") {
+        ret &= (outport_dirn == "South");
+    }
+    if (inport_dirn == "SameSouth" || inport_dirn == "South") {
+        ret &= (outport_dirn == "South" ||
+                outport_dirn == "SouthWest" ||
+                outport_dirn == "SouthEast" ||
+                outport_dirn == "SameSouth");
+    }
+    return ret;
+}
+std::vector < int >
+RoutingUnit::outportsComputeLongRange(RouteInfo route,
+                                     int inport,
+                                     PortDirection inport_dirn)
+{
+    // Long-Range Turn Model routing is a simple routing algorithm
+    // that routes all packets to the South port
+    // except for the packets that are coming from the North port
+    // which are routed to the East port.
+    // This routing algorithm is used in the Mesh topology.
+    PortDirection outport_dirn = "Unknown";
+
+    [[maybe_unused]] int num_rows = m_router->get_net_ptr()->getNumRows();
+    int num_cols = m_router->get_net_ptr()->getNumCols();
+    assert(num_rows > 0 && num_cols > 0);
+
+    int my_id = m_router->get_id();
+    int my_x = my_id % num_cols;
+    int my_y = my_id / num_cols;
+
+    int dest_id = route.dest_router;
+    int dest_x = dest_id % num_cols;
+    int dest_y = dest_id / num_cols;
+
+    int x_hops = abs(dest_x - my_x);
+    int y_hops = abs(dest_y - my_y);
+
+    bool x_dirn = (dest_x >= my_x);
+    bool y_dirn = (dest_y >= my_y);
+    std::vector < int > outports;
+    int k_x = -1, k_y = -1, flag = 0;
+    if (m_router->longLinkId != -1) {
+        k_x = m_router->longLinkId % num_cols, k_y = m_router->longLinkId / num_cols;
+        if (abs(dest_x - k_x) + abs(dest_y - k_y) + 1 < x_hops + y_hops) 
+            flag = 1;
+    }
+    for (auto it = m_outports_dirn2idx.begin(); it != m_outports_dirn2idx.end(); ++it) {
+        PortDirection dirn = it->first;
+        bool ok = sendAllowedLongRange(inport_dirn, dirn);
+        if (dirn == "East")
+            ok &= (x_hops > 0 && x_dirn);
+        if (dirn == "West")
+            ok &= (x_hops > 0 && !x_dirn);
+        if (dirn == "North")
+            ok &= (y_hops > 0 && y_dirn);
+        if (dirn == "South")
+            ok &= (y_hops > 0 && !y_dirn);
+        if (dirn.length() > 5)
+            ok &= flag;
+        if (dirn == "SouthWest" || dirn == "SouthEast" 
+            || dirn == "SameSouth" || dirn == "South") {
+            // can only go south after going sw/se
+            ok &= (x_hops == 0 && !y_dirn);
+        }
+        if (ok) {
+            outports.push_back(it->second);
+        }
+    }
+    assert(outports.size());
+    return outports;
 }
 
 // Template for implementing custom routing algorithm

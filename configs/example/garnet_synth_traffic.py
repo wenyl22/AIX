@@ -57,6 +57,7 @@ parser.add_argument(
         "neighbor",
         "shuffle",
         "transpose",
+        "simple",
     ],
 )
 
@@ -117,6 +118,19 @@ parser.add_argument(
                         Set to -1 to inject randomly in all vnets.",
 )
 
+parser.add_argument(
+    "--traffic-matrix",
+    type = str,
+    default = None,
+    help = "Traffic matrix file",
+)
+
+parser.add_argument(
+    "--budget",
+    type = int,
+    default = 12,
+    help = "Budget for adding long range links",
+)
 #
 # Add the ruby specific and protocol specific options
 #
@@ -173,7 +187,7 @@ root = Root(full_system=False, system=system)
 root.system.mem_mode = "timing"
 
 # Not much point in this being higher than the L1 latency
-m5.ticks.setGlobalFrequency("1ps")
+m5.ticks.setGlobalFrequency("500ps")
 
 # instantiate configuration
 m5.instantiate()
