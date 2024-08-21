@@ -287,9 +287,8 @@ NetworkInterface::wakeup()
         if (inCreditLink->isReady(curTick())) {
             Credit *t_credit = (Credit*) inCreditLink->consumeLink();
             outVcState[t_credit->get_vc()].increment_credit();
-            if (t_credit->is_free_signal()) {
-                outVcState[t_credit->get_vc()].setState(IDLE_,
-                    curTick());
+            if (t_credit->is_free_signal() || m_net_ptr -> wormhole_enabled()) {
+                outVcState[t_credit->get_vc()].setState(IDLE_, curTick());
             }
             delete t_credit;
         }
@@ -450,7 +449,11 @@ NetworkInterface::flitisizeMessage(MsgPtr msg_ptr, int vnet)
         }
 
         m_ni_out_vcs_enqueue_time[vc] = curTick();
-        outVcState[vc].setState(ACTIVE_, curTick());
+        if (m_net_ptr->wormhole_enabled()) {
+            // do nothing
+        } else {
+            outVcState[vc].setState(ACTIVE_, curTick());
+        }
     }
     return true ;
 }
@@ -516,9 +519,10 @@ NetworkInterface::scheduleOutputPort(OutputPort *oPort)
                    continue;
 
                // Update the round robin arbiter
-               oPort->vcRoundRobin(vc);
 
                outVcState[vc].decrement_credit();
+               if (outVcState[vc].get_credit_count() == 0)
+                    outVcState[vc].setState(ACTIVE_, curTick());
 
                // Just removing the top flit
                flit *t_flit = niOutVcs[vc].getTopFlit();

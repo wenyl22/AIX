@@ -87,7 +87,10 @@ InputUnit::wakeup()
         int vc = t_flit->get_vc();
         t_flit->increment_hops(); // for stats
 
-        if ((t_flit->get_type() == HEAD_) ||
+        if (m_router -> get_net_ptr() -> wormhole_enabled()) {
+            assert(virtualChannels[vc].get_state() == IDLE_);
+        }
+        else if ((t_flit->get_type() == HEAD_) ||
             (t_flit->get_type() == HEAD_TAIL_)) {
 
             assert(virtualChannels[vc].get_state() == IDLE_);
@@ -149,6 +152,8 @@ InputUnit::increment_credit(int in_vc, bool free_signal, Tick curTime)
     Credit *t_credit = new Credit(in_vc, free_signal, curTime);
     creditQueue.insert(t_credit);
     m_credit_link->scheduleEventAbsolute(m_router->clockEdge(Cycles(1)));
+    if (m_router -> get_net_ptr()-> wormhole_enabled())
+        set_vc_idle(in_vc, curTime);
 }
 
 bool

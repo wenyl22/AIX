@@ -121,8 +121,28 @@ SwitchAllocator::arbitrate_inports()
             if (input_unit->need_stage(invc, SA_, curTick())) {
                 // This flit is in SA stage
 
-                int outport = input_unit->get_outport(invc);
-                int outvc = input_unit->get_outvc(invc);
+                // If it's wormhole, we can't say that each vc has a outport, 
+                // we need to calculate outport, outvc for each flit
+
+                int outport, outvc;
+
+                if (m_router -> get_net_ptr() -> wormhole_enabled()) {
+                    outport = m_router -> route_compute(input_unit -> 
+                    peekTopFlit(invc) -> get_route(), inport, 
+                    input_unit -> get_direction());
+                    outvc = 0;
+                    for (int vc = 1; vc < m_vc_per_vnet; vc++) {
+                        if (m_router->getOutputUnit(outport)->get_credit_count(vc) > 
+                            m_router->getOutputUnit(outport)->get_credit_count(outvc)) {
+                            outvc = vc;
+                        }
+                    }
+                }
+                else {
+                    outport = input_unit->get_outport(invc);
+                    outvc = input_unit->get_outvc(invc);
+                }
+                    
 
                 // check if the flit in this InputVC is allowed to be sent
                 // send_allowed conditions described in that function.
@@ -179,7 +199,10 @@ SwitchAllocator::arbitrate_outports()
                 // grant this outport to this inport
                 int invc = m_vc_winners[inport];
 
-                int outvc = input_unit->get_outvc(invc);
+                int outvc;
+                if (m_router -> get_net_ptr() -> wormhole_enabled()) outvc = -1;
+                else outvc = input_unit->get_outvc(invc);
+
                 if (outvc == -1) {
                     // VC Allocation - select any free VC from outport
                     outvc = vc_allocate(outport, inport, invc);
@@ -221,7 +244,10 @@ SwitchAllocator::arbitrate_outports()
                 m_router->grant_switch(inport, t_flit);
                 m_output_arbiter_activity++;
 
-                if ((t_flit->get_type() == TAIL_) ||
+                if (m_router -> get_net_ptr()-> wormhole_enabled()) {
+                    input_unit -> increment_credit(invc, false, curTick());
+                }
+                else if ((t_flit->get_type() == TAIL_) ||
                     t_flit->get_type() == HEAD_TAIL_) {
 
                     // This Input VC should now be empty
@@ -292,6 +318,10 @@ SwitchAllocator::send_allowed(int inport, int invc, int outport, int outvc)
     bool has_credit = false;
 
     auto output_unit = m_router->getOutputUnit(outport);
+    assert(!m_router -> get_net_ptr() -> wormhole_enabled() || has_outvc);
+    // has_outvc means if the flit can go to that outvc. 
+    // In wormhole, flits can go to every outvc.
+    // The only thing is to check the credit.
     if (!has_outvc) {
 
         // needs outvc

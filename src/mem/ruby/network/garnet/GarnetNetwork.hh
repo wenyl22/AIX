@@ -157,6 +157,8 @@ class GarnetNetwork : public Network
     void update_traffic_distribution(RouteInfo route);
     int getNextPacketID() { return m_next_packet_id++; }
 
+    bool wormhole_enabled() { return m_wormhole_enabled; }
+
   protected:
     // Configuration
     int m_num_rows;
@@ -167,6 +169,7 @@ class GarnetNetwork : public Network
     uint32_t m_buffers_per_data_vc;
     int m_routing_algorithm;
     bool m_enable_fault_model;
+    bool m_wormhole_enabled;
 
     // Statistical variables
     statistics::Vector m_packets_received;

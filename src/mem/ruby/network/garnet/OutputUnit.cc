@@ -68,6 +68,9 @@ OutputUnit::decrement_credit(int out_vc)
             out_vc, m_router->curCycle(), m_credit_link->name());
 
     outVcState[out_vc].decrement_credit();
+    if (m_router -> get_net_ptr() -> wormhole_enabled() && 
+        !outVcState[out_vc].get_credit_count())
+        outVcState[out_vc].setState(ACTIVE_, curTick());
 }
 
 void
@@ -80,6 +83,8 @@ OutputUnit::increment_credit(int out_vc)
             out_vc, m_router->curCycle(), m_credit_link->name());
 
     outVcState[out_vc].increment_credit();
+    if (m_router -> get_net_ptr() -> wormhole_enabled())
+        outVcState[out_vc].setState(IDLE_, curTick());
 }
 
 // Check if the output VC (i.e., input VC at next router)
@@ -88,7 +93,7 @@ OutputUnit::increment_credit(int out_vc)
 bool
 OutputUnit::has_credit(int out_vc)
 {
-    assert(outVcState[out_vc].isInState(ACTIVE_, curTick()));
+//    assert(outVcState[out_vc].isInState(ACTIVE_, curTick()));
     return outVcState[out_vc].has_credit();
 }
 
@@ -113,7 +118,10 @@ OutputUnit::select_free_vc(int vnet)
     int vc_base = vnet*m_vc_per_vnet;
     for (int vc = vc_base; vc < vc_base + m_vc_per_vnet; vc++) {
         if (is_vc_idle(vc, curTick())) {
-            outVcState[vc].setState(ACTIVE_, curTick());
+            if (m_router -> get_net_ptr() -> wormhole_enabled()) {
+                // do nothing
+            }
+            else outVcState[vc].setState(ACTIVE_, curTick());
             return vc;
         }
     }

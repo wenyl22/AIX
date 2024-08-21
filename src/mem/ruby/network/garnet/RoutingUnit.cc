@@ -190,6 +190,8 @@ RoutingUnit::outportCompute(RouteInfo route, int inport,
             lookupRoutingTable(route.vnet, route.net_dest); break;
         case XY_:     outport =
             outportComputeXY(route, inport, inport_dirn); break;
+        case ONLY_L_: outport =
+            outportOnlyL(route, inport, inport_dirn); break;
         // any custom algorithm
         case CUSTOM_: outport =
             outportComputeCustom(route, inport, inport_dirn); break;
@@ -258,6 +260,19 @@ RoutingUnit::outportComputeXY(RouteInfo route,
     }
 
     return m_outports_dirn2idx[outport_dirn];
+}
+
+int
+RoutingUnit::outportOnlyL(RouteInfo route,
+                              int inport,
+                              PortDirection inport_dirn)
+{
+    int my_id = m_router->get_id();
+    int dest_id = route.dest_router;
+    assert(my_id != dest_id);
+    return m_outports_dirn2idx["Left"];
+
+    // I can't understand, why NS is flipped in XY?
 }
 
 // Template for implementing custom routing algorithm
