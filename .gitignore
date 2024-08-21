@@ -32,3 +32,16 @@ configs/example/memcheck.cfg
 configs/dram/lowp_sweep.cfg
 .pyenv
 .vscode
+build.sh
+lab-desc/
+lab2_stat.sh
+lab3.patch
+lab3a_run.sh
+lab3a_stat.sh
+lab3b_run.sh
+network_stats.txt
+network_stats_3a.txt
+network_stats_all.txt
+network_stats_all_3a.txt
+notes.txt
+test
