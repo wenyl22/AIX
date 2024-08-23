@@ -195,6 +195,8 @@ RoutingUnit::outportCompute(RouteInfo route, int inport,
             outportComputeCustom(route, inport, inport_dirn); break;
         case LFT_:    outport =
             outportComputeLFT(route, inport); break;
+        case XYZ_:    outport =
+            outportComputeXYZ(route, inport, inport_dirn); break;
         default: panic("Unknown non-adaptive routing algorithm\n");
     }
 
@@ -268,6 +270,50 @@ RoutingUnit::outportComputeLFT(RouteInfo route, int inport)
     return m_outports_dirn2idx["West"];
 }
 
+// XYZ routing
+int
+RoutingUnit::outportComputeXYZ(RouteInfo route,
+                               int inport,
+                               PortDirection inport_dirn)
+{
+    PortDirection outport_dirn = "Unknown";
+
+    [[maybe_unused]] int num_w = m_router->get_net_ptr()->getNumRows();
+    int num_h = num_w, num_d = num_w;
+    int my_id = m_router->get_id();
+    int my_x = my_id % num_w, my_y = (my_id / num_w) % num_h, my_z = my_id / (num_w * num_h);
+    int dest_id = route.dest_router;
+    int dest_x = dest_id % num_w, dest_y = (dest_id / num_w) % num_h, dest_z = dest_id / (num_w * num_h);
+    int x_hops = abs(dest_x - my_x), y_hops = abs(dest_y - my_y), z_hops = abs(dest_z - my_z);
+    bool x_dirn = (dest_x >= my_x), y_dirn = (dest_y >= my_y), z_dirn = (dest_z >= my_z);
+    if (x_hops > 0) {
+        if (x_dirn) {
+            assert(inport_dirn == "Local" || inport_dirn == "West");
+            outport_dirn = "East";
+        } else {
+            assert(inport_dirn == "Local" || inport_dirn == "East");
+            outport_dirn = "West";
+        }
+    } else if (y_hops > 0) {
+        if (y_dirn) {
+            assert(inport_dirn != "North");
+            outport_dirn = "North";
+        } else {
+            assert(inport_dirn != "South");
+            outport_dirn = "South";
+        }
+    } else if (z_hops > 0) {
+        if (z_dirn) {
+            outport_dirn = "Up";
+        } else {
+            outport_dirn = "Down";
+        }
+    } else {
+        panic("x_hops == y_hops == z_hops == 0");
+    }
+    return m_outports_dirn2idx[outport_dirn];
+ }
+
 std::vector < int >
 RoutingUnit::outportsCompute(RouteInfo route,
                              int inport,
@@ -284,7 +330,7 @@ RoutingUnit::outportsCompute(RouteInfo route,
     switch (routing_algorithm) {
         case SOUTHLAST_:  outports =
             outportsComputeSouthLast(route, inport, inport_dirn); break;
-        case LONGRANGE_:  outports =
+        case SLLONGRANGE_:  outports =
             outportsComputeLongRange(route, inport, inport_dirn); break;
         default: panic("Unknown adaptive routing algorithm\n");
     }

@@ -75,3 +75,5 @@ class GarnetSyntheticTraffic(ClockedObject):
     )
     test = RequestPort("Port to the memory system to test")
     system = Param.System(Parent.any, "System we belong to")
+    hotspots = VectorParam.Int([], "List of hotspots")
+    hotspot_factor = Param.Float(0.1, "Hotspot factor")

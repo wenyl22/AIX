@@ -21,8 +21,7 @@ class Mesh_longrange(SimpleTopology):
         elif synthetic == "uniform_random":
             for i in range(num_routers):
                 for j in range(num_routers):
-                    if i != j:
-                        traffic_matrix[i][j] = 1
+                    traffic_matrix[i][j] = 1
         elif synthetic == "tornado":
             for i in range(num_rows):
                 for j in range(num_columns):
@@ -58,6 +57,14 @@ class Mesh_longrange(SimpleTopology):
             for i in range(num_rows):
                 for j in range(num_columns):
                     traffic_matrix[i + j * num_columns][j + i * num_columns] = 1
+        elif synthetic == "hotspot":
+            for i in range(num_routers):
+                for j in range(num_routers):
+                    traffic_matrix[i][j] = 1
+            for i in options.hotspots:
+                for j in range(num_routers):
+                    traffic_matrix[i][j] += options.hotspot_factor
+
         if options.single_sender_id != -1:
             for i in range(num_routers):
                 if i != options.single_sender_id:
@@ -104,11 +111,6 @@ class Mesh_longrange(SimpleTopology):
             To[max_i] = max_j
             To[max_j] = max_i
             options.budget -= ((max_i % num_columns - max_j % num_columns)**2 + abs(max_i // num_columns - max_j // num_columns)**2)**0.5
-        # caculate reduce in average distance
-        # To = [-1] * num_routers
-        # for i in range(0, 16, 4):
-        #     To[i] = i + 3
-        #     To[i + 3] = i
         sum_d = 0
         sum_rd = 0
         for i in range(num_routers):

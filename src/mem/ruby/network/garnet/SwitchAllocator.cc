@@ -123,25 +123,28 @@ SwitchAllocator::arbitrate_inports()
 
                 int outport = input_unit->get_outport(invc);
                 int outvc = input_unit->get_outvc(invc);
+                int vnet = get_vnet(invc);
                 // wormhole needs to compute outvc for each flit
-                //even if they are in a same VC
+                // even if they are in a same VC
                 if (m_router->get_net_ptr()->getWormholeEnabled()) {
                     if (m_router->get_net_ptr()->getAdaptiveRoutingEnabled()) {
                         std::vector < int > outports = m_router->routes_compute(input_unit->peekTopFlit(invc)->get_route(), inport, input_unit->get_direction());
                         assert(outports.size() > 0);
                         outport = outports[0];
+                        outvc = m_router->getOutputUnit(outport)->get_richest_vc(vnet);
                         // If there are two choices, select the one with minimal congestion
                         if (outports.size() == 2) {
-                            if(m_router->getOutputUnit(outports[1])->get_credit_count(invc) 
-                            > m_router->getOutputUnit(outports[0])->get_credit_count(invc) + m_router->get_net_ptr()->getCongestionSensor()) {
+                            int outvc1 = m_router->getOutputUnit(outports[0])->get_richest_vc(vnet);
+                            if(m_router->getOutputUnit(outports[1])->get_credit_count(outvc1) 
+                            > m_router->getOutputUnit(outports[0])->get_credit_count(outvc) + m_router->get_net_ptr()->getCongestionSensor()) {
                                 outport = outports[1];
                             }
                         }
 
                     } else {
                         outport = m_router->route_compute(input_unit->peekTopFlit(invc)->get_route(), inport, input_unit->get_direction());
+                        outvc = m_router->getOutputUnit(outport)->get_richest_vc(vnet);
                     }
-                    outvc = invc;
                 }
                 // check if the flit in this InputVC is allowed to be sent
                 // send_allowed conditions described in that function.
@@ -390,9 +393,11 @@ int
 SwitchAllocator::vc_allocate_wormhole(int outport, int inport, int invc)
 {
     // Select a free VC from the output port
-    int outvc = invc;
+    int vnet = get_vnet(invc);
+    int outvc = m_router->getOutputUnit(outport)->get_richest_vc(vnet);
     // has to get a valid VC since it checked before performing SA
     assert(outvc != -1);
+    m_router->getInputUnit(inport)->grant_outvc(invc, outvc);
     return outvc;
 }
 

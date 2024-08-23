@@ -78,6 +78,10 @@ class RoutingUnit
     // Routing for Ring
     int outportComputeLFT(RouteInfo route,
                           int inport);
+    // Routing for Cube
+    int outportComputeXYZ(RouteInfo route,
+                          int inport,
+                          PortDirection inport_dirn);
     // Custom Routing Algorithm using Port Directions
     int outportComputeCustom(RouteInfo route,
                              int inport,

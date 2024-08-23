@@ -57,7 +57,7 @@ parser.add_argument(
         "neighbor",
         "shuffle",
         "transpose",
-        "simple",
+        "hotspot",
     ],
 )
 
@@ -131,6 +131,20 @@ parser.add_argument(
     default = 12,
     help = "Budget for adding long range links",
 )
+
+parser.add_argument(
+    "--hotspots",
+    type = list,
+    default = [5, 11, 12],
+    help = "List of hotspots",
+)
+
+parser.add_argument(
+    "--hotspot-factor",
+    type = int,
+    default = 20,
+    help = "Factor in percentage to increase the prob of hotspots to be selected as destination",
+)
 #
 # Add the ruby specific and protocol specific options
 #
@@ -149,6 +163,8 @@ cpus = [
         inj_vnet=args.inj_vnet,
         precision=args.precision,
         num_dest=args.num_dirs,
+        hotspots=args.hotspots,
+        hotspot_factor=args.hotspot_factor / 100.0,
     )
     for i in range(args.num_cpus)
 ]

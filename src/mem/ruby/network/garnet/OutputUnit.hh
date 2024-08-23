@@ -96,6 +96,22 @@ class OutputUnit : public Consumer
         return (outVcState[vc].isInState(IDLE_, curTime));
     }
 
+    int
+    get_richest_vc(int vnet)
+    {
+        int richest_vc = -1;
+        int max_credit_count = -1;
+        for (int vc = vnet * m_vc_per_vnet;
+             vc < (vnet + 1) * m_vc_per_vnet; vc++) {
+            if (outVcState[vc].get_credit_count() > max_credit_count) {
+                max_credit_count = outVcState[vc].get_credit_count();
+                richest_vc = vc;
+            }
+        }
+        assert(richest_vc != -1);
+        return richest_vc;
+    }
+
     void insert_flit(flit *t_flit);
 
     inline int
