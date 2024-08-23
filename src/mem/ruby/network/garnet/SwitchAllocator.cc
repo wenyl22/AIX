@@ -66,11 +66,13 @@ SwitchAllocator::init()
     m_round_robin_invc.resize(m_num_inports);
     m_port_requests.resize(m_num_inports);
     m_vc_winners.resize(m_num_inports);
+    m_askfor_vc.resize(m_num_inports);
 
     for (int i = 0; i < m_num_inports; i++) {
         m_round_robin_invc[i] = 0;
         m_port_requests[i] = -1;
         m_vc_winners[i] = -1;
+        m_askfor_vc[i] = -1;
     }
 
     for (int i = 0; i < m_num_outports; i++) {
@@ -114,33 +116,45 @@ SwitchAllocator::arbitrate_inports()
     // Independent arbiter at each input port
     for (int inport = 0; inport < m_num_inports; inport++) {
         int invc = m_round_robin_invc[inport];
-
         for (int invc_iter = 0; invc_iter < m_num_vcs; invc_iter++) {
             auto input_unit = m_router->getInputUnit(inport);
-
             if (input_unit->need_stage(invc, SA_, curTick())) {
                 // This flit is in SA stage
-
                 int outport = input_unit->get_outport(invc);
                 int outvc = input_unit->get_outvc(invc);
                 int vnet = get_vnet(invc);
                 // wormhole needs to compute outvc for each flit
                 // even if they are in a same VC
                 if (m_router->get_net_ptr()->getWormholeEnabled()) {
+                    outport = outvc = -1;
                     if (m_router->get_net_ptr()->getAdaptiveRoutingEnabled()) {
-                        std::vector < int > outports = m_router->routes_compute(input_unit->peekTopFlit(invc)->get_route(), inport, input_unit->get_direction());
-                        assert(outports.size() > 0);
-                        outport = outports[0];
-                        outvc = m_router->getOutputUnit(outport)->get_richest_vc(vnet);
-                        // If there are two choices, select the one with minimal congestion
-                        if (outports.size() == 2) {
-                            int outvc1 = m_router->getOutputUnit(outports[0])->get_richest_vc(vnet);
-                            if(m_router->getOutputUnit(outports[1])->get_credit_count(outvc1) 
-                            > m_router->getOutputUnit(outports[0])->get_credit_count(outvc) + m_router->get_net_ptr()->getCongestionSensor()) {
-                                outport = outports[1];
+                        std::vector < std::pair<int, int> > outports_pair = 
+                            m_router->routes_compute(input_unit->peekTopFlit(invc)->get_route(), inport, input_unit->get_direction(), invc), candidates;
+                        
+                        for (auto it = outports_pair.begin(); it != outports_pair.end(); ) {
+                            int cur_outport = it->first, cur_outvc = it->second;
+                            while (it != outports_pair.end() && it->first == cur_outport) {
+                                if (m_router->getOutputUnit(cur_outport)->get_credit_count(it->second) 
+                                > m_router->getOutputUnit(cur_outport)->get_credit_count(cur_outvc)) {
+                                    cur_outvc = it->second;
+                                }
+                                it++;
+                            }
+                            candidates.push_back(std::make_pair(cur_outport, cur_outvc));
+                        }
+                        outport = candidates[0].first, outvc = candidates[0].second;
+                        int ext = m_router->get_net_ptr()->getCongestionSensor();
+                        // prioritize the first outputport
+                        for (int i = 1; i < candidates.size(); ++i) {
+                            int cur_outport = candidates[i].first, cur_outvc = candidates[i].second;
+                            if (m_router->getOutputUnit(cur_outport)->get_credit_count(cur_outvc) 
+                                > m_router->getOutputUnit(outport)->get_credit_count(outvc) + ext) {
+                                outport = cur_outport;
+                                outvc = cur_outvc;
+                                ext = 0;
                             }
                         }
-
+                        assert(outvc == m_router->getOutputUnit(outport)->get_richest_vc(vnet));
                     } else {
                         outport = m_router->route_compute(input_unit->peekTopFlit(invc)->get_route(), inport, input_unit->get_direction());
                         outvc = m_router->getOutputUnit(outport)->get_richest_vc(vnet);
@@ -156,6 +170,7 @@ SwitchAllocator::arbitrate_inports()
                     m_input_arbiter_activity++;
                     m_port_requests[inport] = outport;
                     m_vc_winners[inport] = invc;
+                    m_askfor_vc[inport] = outvc;
                     break; // got one vc winner for this port
                 }
             }
@@ -202,7 +217,8 @@ SwitchAllocator::arbitrate_outports()
 
                 int outvc = input_unit->get_outvc(invc);
                 if (m_router->get_net_ptr()->getWormholeEnabled()) {
-                    outvc = vc_allocate_wormhole(outport, inport, invc);
+                    outvc = m_askfor_vc[inport];
+                    //vc_allocate_wormhole(outport, inport, invc);
 
                 } else {
                     if (outvc == -1) {

@@ -314,34 +314,39 @@ RoutingUnit::outportComputeXYZ(RouteInfo route,
     return m_outports_dirn2idx[outport_dirn];
  }
 
-std::vector < int >
+std::vector < std::pair<int, int> >
 RoutingUnit::outportsCompute(RouteInfo route,
                              int inport,
-                             PortDirection inport_dirn)
+                             PortDirection inport_dirn, int invc)
 {
     int outport = -1;
     if (route.dest_router == m_router->get_id()) {
         outport = lookupRoutingTable(route.vnet, route.net_dest);
-        return std::vector< int >(1, outport);
+        std::vector < std::pair<int, int> > outports;
+        int vnet = route.vnet;
+        for (int i = 0; i < m_router->get_vc_per_vnet(); ++i) {
+            outports.push_back(std::make_pair(outport, i + vnet * m_router->get_vc_per_vnet()));
+        }
+        return outports;
     }
     RoutingAlgorithm routing_algorithm =
         (RoutingAlgorithm) m_router->get_net_ptr()->getRoutingAlgorithm();
-    std::vector < int > outports;
+    std::vector < std::pair<int, int> > outports;
     switch (routing_algorithm) {
         case SOUTHLAST_:  outports =
-            outportsComputeSouthLast(route, inport, inport_dirn); break;
+            outportsComputeSouthLast(route, inport, inport_dirn, invc); break;
         case SLLONGRANGE_:  outports =
-            outportsComputeLongRange(route, inport, inport_dirn); break;
+            outportsComputeLongRange(route, inport, inport_dirn, invc); break;
         default: panic("Unknown adaptive routing algorithm\n");
     }
     return outports;
 }
 
 // South-Last routing
-std::vector < int >
+std::vector < std::pair<int, int> >
 RoutingUnit::outportsComputeSouthLast(RouteInfo route,
                                      int inport,
-                                     PortDirection inport_dirn)
+                                     PortDirection inport_dirn, int invc)
 {
     PortDirection outport_dirn = "Unknown";
 
@@ -363,9 +368,10 @@ RoutingUnit::outportsComputeSouthLast(RouteInfo route,
     bool x_dirn = (dest_x >= my_x);
     bool y_dirn = (dest_y >= my_y);
     std::vector < int > outports;
+    int vnet = route.vnet;
     // for (int i = 0; i < m_outports_dirn2idx.size();++i)
     //     assert(m_outports_dirn2idx[m_outports_idx2dirn[i]] == i);
-    if (inport_dirn == "North") {
+    if (inport_dirn == "North") {        
         outports.push_back(m_outports_dirn2idx["South"]);
     } else {
         if (x_hops > 0) {
@@ -383,11 +389,14 @@ RoutingUnit::outportsComputeSouthLast(RouteInfo route,
             }
         }
     }
-    assert(outports.size());
-    // for (int i = 0; i < outports.size(); i++) {
-    //     std::cout << "outport: " << m_outports_idx2dirn[outports[i]] << std::endl;
-    // }
-    return outports;
+    std::vector< std::pair<int, int> > outports_pair;
+    for (int i = 0; i < outports.size(); ++i) {
+        for (int j = 0; j < m_router->get_vc_per_vnet(); ++j) {
+            outports_pair.push_back(std::make_pair(outports[i], j + vnet * m_router->get_vc_per_vnet()));
+        }
+    }
+    assert(outports_pair.size());
+    return outports_pair;
 }
 
 bool 
@@ -405,10 +414,10 @@ RoutingUnit::sendAllowedLongRange(PortDirection inport_dirn,
     }
     return ret;
 }
-std::vector < int >
+std::vector < std::pair<int, int> >
 RoutingUnit::outportsComputeLongRange(RouteInfo route,
                                      int inport,
-                                     PortDirection inport_dirn)
+                                     PortDirection inport_dirn, int invc)
 {
     // Long-Range Turn Model routing is a simple routing algorithm
     // that routes all packets to the South port
@@ -435,7 +444,7 @@ RoutingUnit::outportsComputeLongRange(RouteInfo route,
     bool x_dirn = (dest_x >= my_x);
     bool y_dirn = (dest_y >= my_y);
     std::vector < int > outports;
-    int k_x = -1, k_y = -1, flag = 0;
+    int k_x = -1, k_y = -1, flag = 0, vnet = route.vnet;
     if (m_router->longLinkId != -1) {
         k_x = m_router->longLinkId % num_cols, k_y = m_router->longLinkId / num_cols;
         if (abs(dest_x - k_x) + abs(dest_y - k_y) + 1 < x_hops + y_hops) 
@@ -463,8 +472,14 @@ RoutingUnit::outportsComputeLongRange(RouteInfo route,
             outports.push_back(it->second);
         }
     }
-    assert(outports.size());
-    return outports;
+    std::vector< std::pair<int, int> > outports_pair;
+    for (int i = 0; i < outports.size(); ++i) {
+        for (int j = 0; j < m_router->get_vc_per_vnet(); ++j) {
+            outports_pair.push_back(std::make_pair(outports[i], j + vnet * m_router->get_vc_per_vnet()));
+        }
+    }
+    assert(outports_pair.size());
+    return outports_pair;
 }
 
 // Template for implementing custom routing algorithm

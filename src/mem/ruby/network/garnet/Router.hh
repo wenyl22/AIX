@@ -117,7 +117,8 @@ class Router : public BasicRouter, public Consumer
     PortDirection getInportDirection(int inport);
 
     int route_compute(RouteInfo route, int inport, PortDirection direction);
-    std::vector<int> routes_compute(RouteInfo route, int inport, PortDirection inport_dirn);
+    std::vector< std::pair<int, int> >
+    routes_compute(RouteInfo route, int inport, PortDirection inport_dirn, int invc);
     void grant_switch(int inport, flit *t_flit);
     void schedule_wakeup(Cycles time);
 

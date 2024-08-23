@@ -56,9 +56,9 @@ class RoutingUnit
     int outportCompute(RouteInfo route,
                       int inport,
                       PortDirection inport_dirn);
-    std::vector < int > outportsCompute(RouteInfo route,
+    std::vector < std::pair<int, int> > outportsCompute(RouteInfo route,
                                   int inport,
-                                  PortDirection inport_dirn);
+                                  PortDirection inport_dirn, int invc);
 
     // Topology-agnostic Routing Table based routing (default)
     void addRoute(std::vector<NetDest>& routing_table_entry);
@@ -87,14 +87,13 @@ class RoutingUnit
                              int inport,
                              PortDirection inport_dirn);
     // Turn Model Routing for Mesh
-    std::vector < int > outportsComputeSouthLast(RouteInfo route,
+    std::vector < std::pair<int, int> > outportsComputeSouthLast(RouteInfo route,
                                 int inport,
-                                PortDirection inport_dirn);
+                                PortDirection inport_dirn, int invc);
     // Long Range Turn Model Routing for Mesh_longrange
-    std::vector < int > outportsComputeLongRange(RouteInfo route,
+    std::vector < std::pair<int, int> > outportsComputeLongRange(RouteInfo route,
                                 int inport,
-                                PortDirection inport_dirn);
-    std::pair<int, int> computeDestWithOutputDirn(PortDirection outport_dirn);
+                                PortDirection inport_dirn, int invc);
     bool sendAllowedLongRange(PortDirection input_dirn,
                                                 PortDirection output_dirn);
     // Returns true if vnet is present in the vector

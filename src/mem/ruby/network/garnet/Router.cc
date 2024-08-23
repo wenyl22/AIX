@@ -167,11 +167,11 @@ Router::route_compute(RouteInfo route, int inport, PortDirection inport_dirn)
     return routingUnit.outportCompute(route, inport, inport_dirn);
 }
 
-std::vector< int >
-Router::routes_compute(RouteInfo route, int inport, PortDirection inport_dirn)
+std::vector< std::pair<int, int> >
+Router::routes_compute(RouteInfo route, int inport, PortDirection inport_dirn, int invc)
 {
     assert(m_network_ptr->getAdaptiveRoutingEnabled());
-    return routingUnit.outportsCompute(route, inport, inport_dirn);
+    return routingUnit.outportsCompute(route, inport, inport_dirn, invc);
 }
 
 void
