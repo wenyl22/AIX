@@ -133,8 +133,9 @@ SwitchAllocator::arbitrate_inports()
                         // If there are two choices, select the one with minimal congestion
                         if (outports.size() == 2) {
                             if(m_router->getOutputUnit(outports[1])->get_credit_count(invc) 
-                            > m_router->getOutputUnit(outports[0])->get_credit_count(invc) + 8)
+                            > m_router->getOutputUnit(outports[0])->get_credit_count(invc) + m_router->get_net_ptr()->getCongestionSensor()) {
                                 outport = outports[1];
+                            }
                         }
 
                     } else {

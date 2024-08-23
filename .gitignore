@@ -32,13 +32,9 @@ configs/example/memcheck.cfg
 configs/dram/lowp_sweep.cfg
 .pyenv
 .vscode
-lab3.sh
-lab3_task2.png
-lab3_task2.txt
-longrange.sh
-network_stats.txt
 plot.py
-southlast.sh
 src/mem/ruby/network/garnet/README.md
-statistics.png
-wormhole.sh
+*.sh
+*.png
+*.txt
+config

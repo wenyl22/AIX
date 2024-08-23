@@ -53,7 +53,7 @@ class GarnetNetwork(RubyNetwork):
     )
     wormhole = Param.Bool(False, "enable wormhole routing")
     adaptive_routing = Param.Bool(False, "enable adaptive routing")
-
+    congestion_sensor = Param.Int(4, "congestion sensor granularity")
 
 class GarnetNetworkInterface(ClockedObject):
     type = "GarnetNetworkInterface"

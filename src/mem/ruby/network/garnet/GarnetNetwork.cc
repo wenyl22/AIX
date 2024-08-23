@@ -73,9 +73,7 @@ GarnetNetwork::GarnetNetwork(const Params &p)
     m_next_packet_id = 0;
     m_enable_wormhole = p.wormhole;
     m_enable_adaptive_routing = p.adaptive_routing;
-    printf("buffers_per_data_vc: %d\n", m_buffers_per_data_vc);
-    printf("wormhole: %d\n", m_enable_wormhole);
-    printf("adaptive_routing: %d\n", m_enable_adaptive_routing);
+    m_congestion_sensor = p.congestion_sensor;
 
     m_enable_fault_model = p.enable_fault_model;
     if (m_enable_fault_model)

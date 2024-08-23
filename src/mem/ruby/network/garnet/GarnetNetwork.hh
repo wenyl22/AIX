@@ -158,6 +158,7 @@ class GarnetNetwork : public Network
     int getNextPacketID() { return m_next_packet_id++; }
     bool getWormholeEnabled() { return m_enable_wormhole; }
     bool getAdaptiveRoutingEnabled() { return m_enable_adaptive_routing; }
+    int getCongestionSensor() { return m_congestion_sensor; }
 
   protected:
     // Configuration
@@ -171,6 +172,7 @@ class GarnetNetwork : public Network
     bool m_enable_fault_model;
     bool m_enable_wormhole;
     bool m_enable_adaptive_routing;
+    int m_congestion_sensor;
 
     // Statistical variables
     statistics::Vector m_packets_received;

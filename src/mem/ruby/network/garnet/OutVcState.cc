@@ -59,8 +59,6 @@ OutVcState::OutVcState(int id, GarnetNetwork *network_ptr,
     else
         m_max_credit_count = network_ptr->getBuffersPerCtrlVC();
     // wormhole enables each vc to hold 16 single-flit packets
-    if (network_ptr->getWormholeEnabled())
-        m_max_credit_count = 16;
     m_credit_count = m_max_credit_count;
     assert(m_credit_count >= 1);
 }
