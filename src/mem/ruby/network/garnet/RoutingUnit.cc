@@ -48,9 +48,13 @@ namespace garnet
 
 RoutingUnit::RoutingUnit(Router *router)
 {
+    max_weight = -1;
     m_router = router;
     m_routing_table.clear();
+    m_ordered_routing_table.clear();
     m_weight_table.clear();
+    m_in_per_vc_weight_table.clear();
+    m_out_per_vc_weight_table.clear();
 }
 
 void
@@ -65,9 +69,56 @@ RoutingUnit::addRoute(std::vector<NetDest>& routing_table_entry)
 }
 
 void
+RoutingUnit::addOrderedRoute(std::vector <std::vector<NetDest>> & routing_table_entry)
+{
+    if (routing_table_entry.size() > m_ordered_routing_table.size()) {
+        m_ordered_routing_table.resize(routing_table_entry.size());
+    }
+    for (int v = 0; v < routing_table_entry.size(); v++) {
+        m_ordered_routing_table[v].push_back(routing_table_entry[v]);
+    }
+}
+
+void
 RoutingUnit::addWeight(int link_weight)
 {
     m_weight_table.push_back(link_weight);
+}
+void
+RoutingUnit::addInWeight(std::vector <int>& link_weight)
+{
+    int vcs = m_router -> get_vc_per_vnet();
+    std::vector <int> extended_weight;
+    if (!link_weight.size()) {
+        for (int i = 0; i < vcs; i++) {
+            extended_weight.push_back(-1);
+        }
+    }
+    else   
+        for (int i = 0; i < vcs; i++) {
+            max_weight = std::max(max_weight, link_weight[i % link_weight.size()]);
+            extended_weight.push_back(link_weight[i % link_weight.size()]);
+        }
+    m_in_per_vc_weight_table.push_back(extended_weight);
+}
+
+
+void
+RoutingUnit::addOutWeight(std::vector <int>& link_weight)
+{
+    int vcs = m_router -> get_vc_per_vnet();
+    std::vector <int> extended_weight;
+    if (!link_weight.size()) {
+        for (int i = 0; i < vcs; i++) {
+            extended_weight.push_back(-1);
+        }
+    }
+    else   
+        for (int i = 0; i < vcs; i++) {
+            max_weight = std::max(max_weight, link_weight[i % link_weight.size()]);
+            extended_weight.push_back(link_weight[i % link_weight.size()]);
+        }
+    m_out_per_vc_weight_table.push_back(extended_weight);
 }
 
 bool
@@ -337,6 +388,8 @@ RoutingUnit::outportsCompute(RouteInfo route,
             outportsComputeSouthLast(route, inport, inport_dirn, invc); break;
         case SLLONGRANGE_:  outports =
             outportsComputeLongRange(route, inport, inport_dirn, invc); break;
+        case ROUTING_HIRY_:  outports = 
+            outportsComputeHiRy(route, inport, invc); break;
         default: panic("Unknown adaptive routing algorithm\n");
     }
     return outports;
@@ -480,6 +533,32 @@ RoutingUnit::outportsComputeLongRange(RouteInfo route,
     }
     assert(outports_pair.size());
     return outports_pair;
+}
+
+std::vector < std::pair<int, int> >
+RoutingUnit::outportsComputeHiRy(RouteInfo route, int inport, int invc) {
+    std::vector <std::pair <int, int> > candidates;
+    int cur_weight = m_in_per_vc_weight_table[inport][invc];
+/*    std::cerr << "In: " << invc << std::endl;
+    std::cerr << "cur_weight: " << cur_weight << std::endl << "src: " << m_router->get_id() << std::endl << "dest: ";
+    for (auto u : route.net_dest.getAllDest())
+        std::cerr << u << ' ';
+    std::cerr << std::endl;*/
+    int num_ports = m_router -> get_num_outports(), num_vc = m_router->get_vc_per_vnet();
+    for (int outport = 0; outport < num_ports; outport++) {
+        for (int outvc = 0; outvc < num_vc; outvc++) {
+            if (m_out_per_vc_weight_table[outport][outvc] >= cur_weight 
+            && m_out_per_vc_weight_table[outport][outvc] != -1
+            && m_out_per_vc_weight_table[outport][outvc] != INFINITE_LATENCY
+            && route.net_dest.intersectionIsNotEmpty(
+                m_ordered_routing_table[route.vnet][outport][m_out_per_vc_weight_table[outport][outvc]])
+                )
+                candidates.push_back(std::make_pair(outport, outvc));
+        }
+    }
+/*    for (auto u : candidates)
+        std::cerr << u.first << ' ' << u.second << std::endl;*/
+    return candidates;
 }
 
 // Template for implementing custom routing algorithm

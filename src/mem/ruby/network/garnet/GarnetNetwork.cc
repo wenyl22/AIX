@@ -70,8 +70,10 @@ GarnetNetwork::GarnetNetwork(const Params &p)
     m_buffers_per_data_vc = p.buffers_per_data_vc;
     m_buffers_per_ctrl_vc = p.buffers_per_ctrl_vc;
     m_routing_algorithm = p.routing_algorithm;
+    m_compete_algorithm = p.compete_algorithm;
     m_next_packet_id = 0;
     m_enable_wormhole = p.wormhole;
+    m_enable_hiry = p.hiry;
     m_enable_adaptive_routing = p.adaptive_routing;
     m_congestion_sensor = p.congestion_sensor;
 
@@ -122,7 +124,7 @@ GarnetNetwork::init()
     // The topology pointer should have already been initialized in the
     // parent network constructor
     assert(m_topology_ptr != NULL);
-    m_topology_ptr->createLinks(this);
+    m_topology_ptr->createLinks(this, true);
 
     // Initialize topology specific parameters
     if (getNumRows() > 0) {
@@ -218,10 +220,10 @@ GarnetNetwork::makeExtInLink(NodeID global_src, SwitchID dest, BasicLink* link,
         m_routers[dest]->
             addInPort(dst_inport_dirn,
                       n_bridge,
-                      garnet_link->intCredBridge[LinkDirection_In]);
+                      garnet_link->intCredBridge[LinkDirection_In], link->m_per_vc_weight);
         m_networkbridges.push_back(n_bridge);
     } else {
-        m_routers[dest]->addInPort(dst_inport_dirn, net_link, credit_link);
+        m_routers[dest]->addInPort(dst_inport_dirn, net_link, credit_link, link->m_per_vc_weight);
     }
 
 }
@@ -235,7 +237,8 @@ GarnetNetwork::makeExtInLink(NodeID global_src, SwitchID dest, BasicLink* link,
 void
 GarnetNetwork::makeExtOutLink(SwitchID src, NodeID global_dest,
                               BasicLink* link,
-                              std::vector<NetDest>& routing_table_entry)
+                              std::vector<NetDest>& routing_table_entry,
+                              std::vector<std::vector<NetDest>>& ordered_routing_table_entry, int max_weight)
 {
     NodeID local_dest = getLocalNodeID(global_dest);
     assert(local_dest < m_nodes);
@@ -280,6 +283,7 @@ GarnetNetwork::makeExtOutLink(SwitchID src, NodeID global_dest,
     } else {
         m_nis[local_dest]->addInPort(net_link, credit_link);
     }
+    int num_vnet = routing_table_entry.size();
 
     if (garnet_link->intBridgeEn) {
         DPRINTF(RubyNetwork, "Enable internal bridge for %s\n",
@@ -288,7 +292,9 @@ GarnetNetwork::makeExtOutLink(SwitchID src, NodeID global_dest,
         m_routers[src]->
             addOutPort(src_outport_dirn,
                        n_bridge,
-                       routing_table_entry, link->m_weight,
+                       routing_table_entry, 
+                       ordered_routing_table_entry,
+                       link->m_weight, link->m_per_vc_weight,
                        garnet_link->intCredBridge[LinkDirection_Out],
                        m_routers[src]->get_vc_per_vnet());
         m_networkbridges.push_back(n_bridge);
@@ -296,8 +302,9 @@ GarnetNetwork::makeExtOutLink(SwitchID src, NodeID global_dest,
         m_routers[src]->
             addOutPort(src_outport_dirn, net_link,
                        routing_table_entry,
-                       link->m_weight, credit_link,
-                       m_routers[src]->get_vc_per_vnet());
+                       ordered_routing_table_entry,
+                       link->m_weight, link->m_per_vc_weight,
+                       credit_link, m_routers[src]->get_vc_per_vnet());
     }
 }
 
@@ -309,6 +316,7 @@ GarnetNetwork::makeExtOutLink(SwitchID src, NodeID global_dest,
 void
 GarnetNetwork::makeInternalLink(SwitchID src, SwitchID dest, BasicLink* link,
                                 std::vector<NetDest>& routing_table_entry,
+                                std::vector<std::vector<NetDest>>& ordered_routing_table_entry,
                                 PortDirection src_outport_dirn,
                                 PortDirection dst_inport_dirn)
 {
@@ -344,10 +352,10 @@ GarnetNetwork::makeInternalLink(SwitchID src, SwitchID dest, BasicLink* link,
             garnet_link->name());
         NetworkBridge *n_bridge = garnet_link->dstNetBridge;
         m_routers[dest]->addInPort(dst_inport_dirn, n_bridge,
-                                   garnet_link->dstCredBridge);
+                                   garnet_link->dstCredBridge, link->m_per_vc_weight);
         m_networkbridges.push_back(n_bridge);
     } else {
-        m_routers[dest]->addInPort(dst_inport_dirn, net_link, credit_link);
+        m_routers[dest]->addInPort(dst_inport_dirn, net_link, credit_link, link->m_per_vc_weight);
     }
 
     if (garnet_link->srcBridgeEn) {
@@ -357,13 +365,15 @@ GarnetNetwork::makeInternalLink(SwitchID src, SwitchID dest, BasicLink* link,
         m_routers[src]->
             addOutPort(src_outport_dirn, n_bridge,
                        routing_table_entry,
-                       link->m_weight, garnet_link->srcCredBridge,
+                       ordered_routing_table_entry,
+                       link->m_weight, link->m_per_vc_weight, garnet_link->srcCredBridge,
                        m_routers[dest]->get_vc_per_vnet());
         m_networkbridges.push_back(n_bridge);
     } else {
         m_routers[src]->addOutPort(src_outport_dirn, net_link,
                         routing_table_entry,
-                        link->m_weight, credit_link,
+                        ordered_routing_table_entry,
+                        link->m_weight, link->m_per_vc_weight, credit_link,
                         m_routers[dest]->get_vc_per_vnet());
     }
 }

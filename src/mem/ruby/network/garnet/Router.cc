@@ -100,7 +100,7 @@ Router::wakeup()
 
 void
 Router::addInPort(PortDirection inport_dirn,
-                  NetworkLink *in_link, CreditLink *credit_link)
+                  NetworkLink *in_link, CreditLink *credit_link, std::vector <int> per_vc_link_weight)
 {
     fatal_if(in_link->bitWidth != m_bit_width, "Widths of link %s(%d)does"
             " not match that of Router%d(%d). Consider inserting SerDes "
@@ -119,12 +119,15 @@ Router::addInPort(PortDirection inport_dirn,
     m_input_unit.push_back(std::shared_ptr<InputUnit>(input_unit));
 
     routingUnit.addInDirection(inport_dirn, port_num);
+    routingUnit.addInWeight(per_vc_link_weight);
 }
 
 void
 Router::addOutPort(PortDirection outport_dirn,
                    NetworkLink *out_link,
-                   std::vector<NetDest>& routing_table_entry, int link_weight,
+                   std::vector<NetDest>& routing_table_entry, 
+                   std::vector<std::vector<NetDest>>& ordered_routing_table_entry,
+                   int link_weight, std::vector <int> per_vc_link_weight,
                    CreditLink *credit_link, uint32_t consumerVcs)
 {
     fatal_if(out_link->bitWidth != m_bit_width, "Widths of units do not match."
@@ -144,7 +147,11 @@ Router::addOutPort(PortDirection outport_dirn,
     m_output_unit.push_back(std::shared_ptr<OutputUnit>(output_unit));
 
     routingUnit.addRoute(routing_table_entry);
+    routingUnit.addOrderedRoute(ordered_routing_table_entry);
+    // [vnet][weight] from [vnet][outport][weight]
+    // So uniform max_weight is needed
     routingUnit.addWeight(link_weight);
+    routingUnit.addOutWeight(per_vc_link_weight);
     routingUnit.addOutDirection(outport_dirn, port_num);
 }
 
@@ -172,6 +179,73 @@ Router::routes_compute(RouteInfo route, int inport, PortDirection inport_dirn, i
 {
     assert(m_network_ptr->getAdaptiveRoutingEnabled());
     return routingUnit.outportsCompute(route, inport, inport_dirn, invc);
+}
+
+std::pair<int, int> 
+Router::routes_compete(RouteInfo route, int inport, int invc, std::vector <std::pair<int, int> > &candidates)
+{
+    std::pair <int, int> res;
+    
+    if (route.dest_router == get_id()) {
+        res = outpairCompeteCredit(candidates);
+    }
+    else
+        switch (m_network_ptr->getCompeteAlgorithm()) {
+            case MAX_CREDIT_:  res = outpairCompeteCredit(candidates); break;
+            case COMPETE_HIRY_:  res = outpairCompeteHiRy(candidates); break;
+            default: panic("Unknown compete algorithm\n");
+    }
+    return res;
+}
+std::pair <int, int> Router::outpairCompeteCredit(std::vector <std::pair<int, int> > &candidates) {
+    assert(candidates.size());
+    std::vector <std::pair<int, int> > per_outport_candidates;
+    for (auto it = candidates.begin(); it != candidates.end(); ) {
+        int cur_outport = it->first, cur_outvc = it->second;
+        while (it != candidates.end() && it->first == cur_outport) {
+            if (getOutputUnit(cur_outport)->get_credit_count(it->second) 
+            > getOutputUnit(cur_outport)->get_credit_count(cur_outvc)) {
+                cur_outvc = it->second;
+            }
+            it++;
+        }
+        per_outport_candidates.push_back(std::make_pair(cur_outport, cur_outvc));
+    }
+
+    auto res = per_outport_candidates[0];
+    int ext = m_network_ptr->getCongestionSensor();
+    // prioritize the first outputport
+    for (int i = 1; i < per_outport_candidates.size(); ++i) {
+        int cur_outport = per_outport_candidates[i].first, cur_outvc = per_outport_candidates[i].second;
+        if (getOutputUnit(cur_outport)->get_credit_count(cur_outvc) 
+            > getOutputUnit(res.first)->get_credit_count(res.second) + ext) {
+            res = std::make_pair(cur_outport, cur_outvc);
+            ext = 0;
+        }
+    }
+    return res;
+}
+
+std::pair <int, int> Router::outpairCompeteHiRy(std::vector <std::pair<int, int> > &candidates) {
+    int min_weight = INFINITE_LATENCY + 1;
+    for (auto it = candidates.begin(); it != candidates.end(); it++) {
+        int cur_outport = it->first, cur_outvc = it->second;
+        int next_weight = (*routingUnit.get_out_per_vc_weight_table())[cur_outport][cur_outvc];
+        assert(next_weight != -1);
+        if (getOutputUnit(cur_outport)->has_credit(cur_outvc))
+            min_weight = std::min(min_weight, next_weight);
+    }
+    std::pair <int, int> res = std::make_pair(-1, -1);
+    for (auto it = candidates.begin(); it != candidates.end(); it++) {
+        int cur_outport = it->first, cur_outvc = it->second;
+        int next_weight = (*routingUnit.get_out_per_vc_weight_table())[cur_outport][cur_outvc];
+        if (next_weight == min_weight && getOutputUnit(cur_outport)->has_credit(cur_outvc)) {
+            if (res == std::make_pair(-1, -1) || getOutputUnit(cur_outport)->get_credit_count(cur_outvc) 
+            > getOutputUnit(res.first)->get_credit_count(res.second))
+                res = *it;
+        }
+    }
+    return res;
 }
 
 void

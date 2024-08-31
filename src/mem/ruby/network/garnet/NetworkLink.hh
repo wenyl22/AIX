@@ -105,6 +105,8 @@ class NetworkLink : public ClockedObject, public Consumer
     Consumer *link_consumer;
     flitBuffer *link_srcQueue;
 
+    int m_weight;
+    std::vector <int> m_per_vc_weight;
 };
 
 } // namespace garnet

@@ -96,7 +96,17 @@ def define_options(parser):
             0: weight-based table
             1: XY (for Mesh. see garnet/RoutingUnit.cc)
             2: Custom (see garnet/RoutingUnit.cc
-            3: LFT_(for Ring. see garnet/RoutingUnit.cc)""",
+            3: LFT_(for Ring. see garnet/RoutingUnit.cc)
+            4: HiRy""",
+    )
+    parser.add_argument(
+        "--compete-algorithm",
+        action="store",
+        type=int,
+        default=0,
+        help="""routing algorithm in network.
+            0: max-credit competition
+            1: hiry""",
     )
     parser.add_argument(
         "--network-fault-model",
@@ -124,6 +134,12 @@ def define_options(parser):
         action="store_true",
         default=False,
         help="Enable wormhole flow-control",
+    )
+    parser.add_argument(
+        "--hiry",
+        action="store_true",
+        default=False,
+        help="Enable HiRy routing & flow-control",
     )
     parser.add_argument(
         "--adaptive-routing",
@@ -195,8 +211,10 @@ def init_network(options, network, InterfaceClass):
         network.vcs_per_vnet = options.vcs_per_vnet
         network.ni_flit_size = options.link_width_bits / 8
         network.routing_algorithm = options.routing_algorithm
+        network.compete_algorithm = options.compete_algorithm
         network.garnet_deadlock_threshold = options.garnet_deadlock_threshold
         network.wormhole = options.wormhole
+        network.hiry = options.hiry
         network.adaptive_routing = options.adaptive_routing
         network.buffers_per_ctrl_vc = options.buffers_per_ctrl_vc
         network.congestion_sensor = options.congestion_sensor

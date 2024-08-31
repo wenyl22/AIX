@@ -62,7 +62,10 @@ class RoutingUnit
 
     // Topology-agnostic Routing Table based routing (default)
     void addRoute(std::vector<NetDest>& routing_table_entry);
+    void addOrderedRoute(std::vector<std::vector<NetDest>>& ordered_routing_table_entry);
     void addWeight(int link_weight);
+    void addInWeight(std::vector <int> & link_weight);
+    void addOutWeight(std::vector <int> & link_weight);
 
     // get output port from routing table
     int  lookupRoutingTable(int vnet, NetDest net_dest);
@@ -94,19 +97,28 @@ class RoutingUnit
     std::vector < std::pair<int, int> > outportsComputeLongRange(RouteInfo route,
                                 int inport,
                                 PortDirection inport_dirn, int invc);
+    std::vector < std::pair<int, int> > outportsComputeHiRy(RouteInfo route,
+                                int inport, int invc);
     bool sendAllowedLongRange(PortDirection input_dirn,
                                                 PortDirection output_dirn);
     // Returns true if vnet is present in the vector
     // of vnets or if the vector supports all vnets.
     bool supportsVnet(int vnet, std::vector<int> sVnets);
 
+    auto get_weight_table() const { return &m_weight_table; }
+    auto get_in_per_vc_weight_table() const { return &m_in_per_vc_weight_table; }
+    auto get_out_per_vc_weight_table() const { return &m_out_per_vc_weight_table; }
+    auto get_max_weight() const { return max_weight; }
 
   private:
     Router *m_router;
 
     // Routing Table
     std::vector<std::vector<NetDest>> m_routing_table;
+    std::vector<std::vector <std::vector<NetDest>>> m_ordered_routing_table;
+    int max_weight;
     std::vector<int> m_weight_table;
+    std::vector<std::vector <int> > m_in_per_vc_weight_table, m_out_per_vc_weight_table;
 
     // Inport and Outport direction to idx maps
     std::map<PortDirection, int> m_inports_dirn2idx;

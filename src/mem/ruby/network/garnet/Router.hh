@@ -76,11 +76,14 @@ class Router : public BasicRouter, public Consumer
 
     void init();
     void addInPort(PortDirection inport_dirn, NetworkLink *link,
-                   CreditLink *credit_link);
+                   CreditLink *credit_link, std::vector <int> per_vc_link_weight);
     void addOutPort(PortDirection outport_dirn, NetworkLink *link,
                     std::vector<NetDest>& routing_table_entry,
-                    int link_weight, CreditLink *credit_link,
-                    uint32_t consumerVcs);
+                    std::vector<std::vector<NetDest>>& ordered_routing_table_entry,
+                    int link_weight, std::vector <int> per_vc_link_weight,
+                    CreditLink *credit_link, uint32_t consumerVcs);
+    std::pair <int, int> outpairCompeteCredit(std::vector <std::pair<int, int> > &candidates);
+    std::pair <int, int> outpairCompeteHiRy(std::vector <std::pair<int, int> > &candidates);
 
     Cycles get_pipe_stages(){ return m_latency; }
     uint32_t get_num_vcs()       { return m_num_vcs; }
@@ -119,6 +122,8 @@ class Router : public BasicRouter, public Consumer
     int route_compute(RouteInfo route, int inport, PortDirection direction);
     std::vector< std::pair<int, int> >
     routes_compute(RouteInfo route, int inport, PortDirection inport_dirn, int invc);
+    std::pair<int, int>
+    routes_compete(RouteInfo route, int inport, int invc, std::vector < std::pair <int, int> > &candidates);
     void grant_switch(int inport, flit *t_flit);
     void schedule_wakeup(Cycles time);
 
@@ -140,6 +145,8 @@ class Router : public BasicRouter, public Consumer
         return m_network_ptr->fault_model->fault_prob(m_id, temperature,
                                                       aggregate_fault_prob);
     }
+
+    RoutingUnit* get_routing_unit() { return &routingUnit; }
 
     bool functionalRead(Packet *pkt, WriteMask &mask);
     uint32_t functionalWrite(Packet *);

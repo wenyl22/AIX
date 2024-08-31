@@ -83,7 +83,7 @@ class Topology
              const std::vector<BasicIntLink *> &int_links);
 
     uint32_t numSwitches() const { return m_number_of_switches; }
-    void createLinks(Network *net);
+    void createLinks(Network *net, bool ordered_SP);
     void print(std::ostream& out) const { out << "[Topology]"; }
 
   private:
@@ -91,26 +91,39 @@ class Topology
                  PortDirection src_outport_dirn = "",
                  PortDirection dest_inport_dirn = "");
     void makeLink(Network *net, SwitchID src, SwitchID dest,
-                  std::vector<NetDest>& routing_table_entry);
+                  std::vector<NetDest>& routing_table_entry,
+                  std::vector<std::vector<NetDest>>& ordered_routing_table_entry);
 
     // Helper functions based on chapter 29 of Cormen et al.
     void extend_shortest_path(Matrix &current_dist, Matrix &latencies,
                               Matrix &inter_switches);
+    void extend_ordered_shortest_path(std::vector <Matrix> &ordered_dist, const std::vector<Matrix> &weight);
 
     Matrix shortest_path(const Matrix &weights,
+            Matrix &latencies, Matrix &inter_switches);
+    std::vector<Matrix> ordered_shortest_path(const std::vector<Matrix> &per_vc_weights,
             Matrix &latencies, Matrix &inter_switches);
 
     bool link_is_shortest_path_to_node(SwitchID src, SwitchID next,
             SwitchID final, const Matrix &weights, const Matrix &dist,
             int vnet);
 
+    bool link_is_ordered_shortest_path_to_node(SwitchID src, SwitchID next,
+            SwitchID final, const std::vector<Matrix> &per_vc_weights, const std::vector <Matrix> &dist,
+            int vnet, int weight);
+
     NetDest shortest_path_to_node(SwitchID src, SwitchID next,
                                   const Matrix &weights, const Matrix &dist,
                                   int vnet);
 
+    NetDest ordered_shortest_path_to_node(SwitchID src, SwitchID next,
+                                  const std::vector<Matrix> &weights, const std::vector <Matrix> &dist,
+                                  int vnet, int weight);
+
     const uint32_t m_nodes;
     const uint32_t m_number_of_switches;
     int m_vnets;
+    int max_weight;
 
     std::vector<BasicExtLink*> m_ext_link_vector;
     std::vector<BasicIntLink*> m_int_link_vector;

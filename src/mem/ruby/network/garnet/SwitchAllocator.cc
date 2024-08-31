@@ -129,32 +129,16 @@ SwitchAllocator::arbitrate_inports()
                     outport = outvc = -1;
                     if (m_router->get_net_ptr()->getAdaptiveRoutingEnabled()) {
                         std::vector < std::pair<int, int> > outports_pair = 
-                            m_router->routes_compute(input_unit->peekTopFlit(invc)->get_route(), inport, input_unit->get_direction(), invc), candidates;
+                            m_router->routes_compute(input_unit->peekTopFlit(invc)->get_route(), 
+                            inport, input_unit->get_direction(), invc), candidates;
+
+                        std::pair <int, int> res = 
+                            m_router->routes_compete(input_unit->peekTopFlit(invc)->get_route(), 
+                            inport, invc, outports_pair);
+
+//                        std::cerr << curTick() << " result: " << res.first << ' ' << res.second << std::endl << std::endl;
                         
-                        for (auto it = outports_pair.begin(); it != outports_pair.end(); ) {
-                            int cur_outport = it->first, cur_outvc = it->second;
-                            while (it != outports_pair.end() && it->first == cur_outport) {
-                                if (m_router->getOutputUnit(cur_outport)->get_credit_count(it->second) 
-                                > m_router->getOutputUnit(cur_outport)->get_credit_count(cur_outvc)) {
-                                    cur_outvc = it->second;
-                                }
-                                it++;
-                            }
-                            candidates.push_back(std::make_pair(cur_outport, cur_outvc));
-                        }
-                        outport = candidates[0].first, outvc = candidates[0].second;
-                        int ext = m_router->get_net_ptr()->getCongestionSensor();
-                        // prioritize the first outputport
-                        for (int i = 1; i < candidates.size(); ++i) {
-                            int cur_outport = candidates[i].first, cur_outvc = candidates[i].second;
-                            if (m_router->getOutputUnit(cur_outport)->get_credit_count(cur_outvc) 
-                                > m_router->getOutputUnit(outport)->get_credit_count(outvc) + ext) {
-                                outport = cur_outport;
-                                outvc = cur_outvc;
-                                ext = 0;
-                            }
-                        }
-                        assert(outvc == m_router->getOutputUnit(outport)->get_richest_vc(vnet));
+                        outport = res.first, outvc = res.second;
                     } else {
                         outport = m_router->route_compute(input_unit->peekTopFlit(invc)->get_route(), inport, input_unit->get_direction());
                         outvc = m_router->getOutputUnit(outport)->get_richest_vc(vnet);
@@ -162,9 +146,9 @@ SwitchAllocator::arbitrate_inports()
                 }
                 // check if the flit in this InputVC is allowed to be sent
                 // send_allowed conditions described in that function.
-                bool make_request =
-                    send_allowed(inport, invc, outport, outvc);
-                // printf("send_allowed = %d\n", make_request);
+                bool make_request;
+                if (outport == -1) make_request = false;
+                else make_request = send_allowed(inport, invc, outport, outvc);
 
                 if (make_request) {
                     m_input_arbiter_activity++;

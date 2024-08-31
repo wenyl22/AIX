@@ -88,7 +88,6 @@ OutputUnit::increment_credit(int out_vc)
 bool
 OutputUnit::has_credit(int out_vc)
 {
-    assert(!m_router->get_net_ptr()->getWormholeEnabled());
     if (m_router->get_net_ptr()->getWormholeEnabled()) {
         return outVcState[out_vc].has_credit();
     }

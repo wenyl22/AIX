@@ -80,6 +80,7 @@ class GarnetNetwork : public Network
     uint32_t getBuffersPerDataVC() { return m_buffers_per_data_vc; }
     uint32_t getBuffersPerCtrlVC() { return m_buffers_per_ctrl_vc; }
     int getRoutingAlgorithm() const { return m_routing_algorithm; }
+    int getCompeteAlgorithm() const { return m_compete_algorithm; }
 
     bool isFaultModelEnabled() const { return m_enable_fault_model; }
     FaultModel* fault_model;
@@ -98,11 +99,13 @@ class GarnetNetwork : public Network
 
     // Methods used by Topology to setup the network
     void makeExtOutLink(SwitchID src, NodeID dest, BasicLink* link,
-                     std::vector<NetDest>& routing_table_entry);
+                     std::vector<NetDest>& routing_table_entry,
+                     std::vector<std::vector<NetDest>>& ordered_routing_table_entry, int max_weight);
     void makeExtInLink(NodeID src, SwitchID dest, BasicLink* link,
                     std::vector<NetDest>& routing_table_entry);
     void makeInternalLink(SwitchID src, SwitchID dest, BasicLink* link,
                           std::vector<NetDest>& routing_table_entry,
+                          std::vector<std::vector<NetDest>>& ordered_routing_table_entry,
                           PortDirection src_outport_dirn,
                           PortDirection dest_inport_dirn);
 
@@ -157,6 +160,7 @@ class GarnetNetwork : public Network
     void update_traffic_distribution(RouteInfo route);
     int getNextPacketID() { return m_next_packet_id++; }
     bool getWormholeEnabled() { return m_enable_wormhole; }
+    bool getHiRyEnabled() { return m_enable_hiry; }
     bool getAdaptiveRoutingEnabled() { return m_enable_adaptive_routing; }
     int getCongestionSensor() { return m_congestion_sensor; }
 
@@ -169,8 +173,10 @@ class GarnetNetwork : public Network
     uint32_t m_buffers_per_ctrl_vc;
     uint32_t m_buffers_per_data_vc;
     int m_routing_algorithm;
+    int m_compete_algorithm;
     bool m_enable_fault_model;
     bool m_enable_wormhole;
+    bool m_enable_hiry;
     bool m_enable_adaptive_routing;
     int m_congestion_sensor;
 

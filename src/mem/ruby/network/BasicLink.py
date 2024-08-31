@@ -44,6 +44,7 @@ class BasicLink(SimObject):
     # determines the link bandwidth in bytes
     bandwidth_factor = Param.Int("generic bandwidth factor, usually in bytes")
     weight = Param.Int(1, "used to restrict routing in shortest path analysis")
+    per_vc_weight = VectorParam.Int([], "used to restrict routing in HiRy mode, per VC")
     supported_vnets = VectorParam.Int([], "Vnets supported Default:All([])")
 
 

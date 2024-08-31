@@ -98,14 +98,15 @@ SimpleNetwork::init()
     // The topology pointer should have already been initialized in
     // the parent class network constructor.
     assert(m_topology_ptr != NULL);
-    m_topology_ptr->createLinks(this);
+    m_topology_ptr->createLinks(this, false);
 }
 
 // From a switch to an endpoint node
 void
 SimpleNetwork::makeExtOutLink(SwitchID src, NodeID global_dest,
                               BasicLink* link,
-                              std::vector<NetDest>& routing_table_entry)
+                              std::vector<NetDest>& routing_table_entry,
+                              std::vector<std::vector<NetDest>>& ordered_routing_table_entry, int max_weight)
 {
     NodeID local_dest = getLocalNodeID(global_dest);
     assert(local_dest < m_nodes);
@@ -139,6 +140,7 @@ SimpleNetwork::makeExtInLink(NodeID global_src, SwitchID dest, BasicLink* link,
 void
 SimpleNetwork::makeInternalLink(SwitchID src, SwitchID dest, BasicLink* link,
                                 std::vector<NetDest>& routing_table_entry,
+                                std::vector<std::vector<NetDest>>& ordered_routing_table_entry,
                                 PortDirection src_outport,
                                 PortDirection dst_inport)
 {
