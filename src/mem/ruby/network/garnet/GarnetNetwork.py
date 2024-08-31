@@ -46,6 +46,7 @@ class GarnetNetwork(RubyNetwork):
     buffers_per_data_vc = Param.UInt32(4, "buffers per data virtual channel")
     buffers_per_ctrl_vc = Param.UInt32(1, "buffers per ctrl virtual channel")
     routing_algorithm = Param.Int(0, "0: Weight-based Table, 1: XY, 2: Custom")
+    escape_routing = Param.Int(0, "routing algorithm for escape VC")
     enable_fault_model = Param.Bool(False, "enable network fault model")
     fault_model = Param.FaultModel(NULL, "network fault model")
     garnet_deadlock_threshold = Param.UInt32(
@@ -54,6 +55,7 @@ class GarnetNetwork(RubyNetwork):
     wormhole = Param.Bool(False, "enable wormhole routing")
     adaptive_routing = Param.Bool(False, "enable adaptive routing")
     congestion_sensor = Param.Int(4, "congestion sensor granularity")
+    simTicks = Param.UInt64(0, "simulation ticks")
 
 class GarnetNetworkInterface(ClockedObject):
     type = "GarnetNetworkInterface"

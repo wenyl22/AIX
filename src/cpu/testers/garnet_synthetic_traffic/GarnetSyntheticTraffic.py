@@ -75,5 +75,8 @@ class GarnetSyntheticTraffic(ClockedObject):
     )
     test = RequestPort("Port to the memory system to test")
     system = Param.System(Parent.any, "System we belong to")
+    topodim = Param.Int(2, "Number of dimensions in the mesh")
     hotspots = VectorParam.Int([], "List of hotspots")
-    hotspot_factor = Param.Float(0.1, "Hotspot factor")
+    hotspot_factor = Param.Int(10, "Hotspot factor")
+
+    traffic_matrix = Param.String("", "Traffic matrix file")

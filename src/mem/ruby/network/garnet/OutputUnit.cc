@@ -54,7 +54,7 @@ OutputUnit::OutputUnit(int id, PortDirection direction, Router *router,
     const int m_num_vcs = consumerVcs * m_router->get_num_vnets();
     outVcState.reserve(m_num_vcs);
     for (int i = 0; i < m_num_vcs; i++) {
-        outVcState.emplace_back(i, m_router->get_net_ptr(), consumerVcs);
+        outVcState.emplace_back(i, m_router->get_net_ptr(), consumerVcs, m_router->getBuffers());
     }
 }
 

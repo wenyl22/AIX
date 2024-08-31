@@ -288,18 +288,14 @@ RoutingUnit::outportComputeXYZ(RouteInfo route,
     bool x_dirn = (dest_x >= my_x), y_dirn = (dest_y >= my_y), z_dirn = (dest_z >= my_z);
     if (x_hops > 0) {
         if (x_dirn) {
-            assert(inport_dirn == "Local" || inport_dirn == "West");
             outport_dirn = "East";
         } else {
-            assert(inport_dirn == "Local" || inport_dirn == "East");
             outport_dirn = "West";
         }
     } else if (y_hops > 0) {
         if (y_dirn) {
-            assert(inport_dirn != "North");
             outport_dirn = "North";
         } else {
-            assert(inport_dirn != "South");
             outport_dirn = "South";
         }
     } else if (z_hops > 0) {
@@ -319,11 +315,10 @@ RoutingUnit::outportsCompute(RouteInfo route,
                              int inport,
                              PortDirection inport_dirn, int invc)
 {
-    int outport = -1;
+    int outport = -1, vnet = route.vnet;
     if (route.dest_router == m_router->get_id()) {
         outport = lookupRoutingTable(route.vnet, route.net_dest);
         std::vector < std::pair<int, int> > outports;
-        int vnet = route.vnet;
         for (int i = 0; i < m_router->get_vc_per_vnet(); ++i) {
             outports.push_back(std::make_pair(outport, i + vnet * m_router->get_vc_per_vnet()));
         }
@@ -331,14 +326,55 @@ RoutingUnit::outportsCompute(RouteInfo route,
     }
     RoutingAlgorithm routing_algorithm =
         (RoutingAlgorithm) m_router->get_net_ptr()->getRoutingAlgorithm();
-    std::vector < std::pair<int, int> > outports;
+    std::vector < std::pair<int, int> > outports, candidates;
+    if (m_router->get_net_ptr()->getEscapeVCEnabled()) {
+        bool flg = (invc == vnet * m_router->get_vc_per_vnet());
+        if (!flg)
+            inport_dirn = "Local";
+        RoutingAlgorithm escape_algorithm =
+            (RoutingAlgorithm) m_router->get_net_ptr()->getEscapeAlgorithm();
+        switch (escape_algorithm) {
+            case XY_:
+                outports = std::vector < std::pair<int, int> >
+                (1, std::make_pair(outportComputeXY(route, inport, inport_dirn), 0));
+                break;
+            case XYZ_:    
+                outports = std::vector < std::pair<int, int> >
+                (1, std::make_pair(outportComputeXYZ(route, inport, inport_dirn), 0));
+                break;
+            case SOUTHLAST_:  
+                outports = outportsComputeSouthLast(route, inport, inport_dirn, invc);
+                break;
+            case SLLONGRANGE_:  
+                outports = outportsComputeLongRange(route, inport, inport_dirn, invc);
+                break;
+            default: panic("Unknown escape routing algorithm\n");
+        }
+        for (int i = 0; i < outports.size(); ++i) {
+            if (outports[i].second == vnet * m_router->get_vc_per_vnet()) {
+                candidates.push_back(outports[i]);
+            }
+        }
+        if (flg) {
+            assert(candidates.size());
+            return candidates;
+        }
+    }
     switch (routing_algorithm) {
         case SOUTHLAST_:  outports =
             outportsComputeSouthLast(route, inport, inport_dirn, invc); break;
         case SLLONGRANGE_:  outports =
             outportsComputeLongRange(route, inport, inport_dirn, invc); break;
+        case ANY_: outports =
+            outportsComputeAny(route, inport, inport_dirn, invc); break;
         default: panic("Unknown adaptive routing algorithm\n");
     }
+    if (m_router->get_net_ptr()->getEscapeVCEnabled()) {
+        outports.insert(outports.end(), candidates.begin(), candidates.end());
+        assert(outports.size());
+        return outports;
+    }
+    assert(outports.size());
     return outports;
 }
 
@@ -399,31 +435,11 @@ RoutingUnit::outportsComputeSouthLast(RouteInfo route,
     return outports_pair;
 }
 
-bool 
-RoutingUnit::sendAllowedLongRange(PortDirection inport_dirn, 
-                                    PortDirection outport_dirn) {
-    bool ret = true;
-    if (inport_dirn == "NorthWest" || inport_dirn == "NorthEast") {
-        ret &= (outport_dirn == "South");
-    }
-    if (inport_dirn == "SameSouth" || inport_dirn == "South") {
-        ret &= (outport_dirn == "South" ||
-                outport_dirn == "SouthWest" ||
-                outport_dirn == "SouthEast" ||
-                outport_dirn == "SameSouth");
-    }
-    return ret;
-}
 std::vector < std::pair<int, int> >
 RoutingUnit::outportsComputeLongRange(RouteInfo route,
                                      int inport,
                                      PortDirection inport_dirn, int invc)
 {
-    // Long-Range Turn Model routing is a simple routing algorithm
-    // that routes all packets to the South port
-    // except for the packets that are coming from the North port
-    // which are routed to the East port.
-    // This routing algorithm is used in the Mesh topology.
     PortDirection outport_dirn = "Unknown";
 
     [[maybe_unused]] int num_rows = m_router->get_net_ptr()->getNumRows();
@@ -452,26 +468,51 @@ RoutingUnit::outportsComputeLongRange(RouteInfo route,
     }
     for (auto it = m_outports_dirn2idx.begin(); it != m_outports_dirn2idx.end(); ++it) {
         PortDirection dirn = it->first;
-        bool ok = sendAllowedLongRange(inport_dirn, dirn);
-        if (dirn == "East")
-            ok &= (x_hops > 0 && x_dirn);
-        if (dirn == "West")
-            ok &= (x_hops > 0 && !x_dirn);
-        if (dirn == "North")
-            ok &= (y_hops > 0 && y_dirn);
-        if (dirn == "South")
-            ok &= (y_hops > 0 && !y_dirn);
-        if (dirn.length() > 5)
-            ok &= flag;
+        bool ok = flag;
+        if (dirn.length() <= 5)  continue;
+        if (inport_dirn == "NorthWest" || inport_dirn == "NorthEast") {
+            ok &= (dirn == "South");
+        }
+        if (inport_dirn == "NorthSame" || inport_dirn == "North") {
+            ok &= (dirn == "South" || dirn == "SouthWest" || dirn == "SouthEast" || dirn == "SouthSame");
+        }
         if (dirn == "SouthWest" || dirn == "SouthEast" 
-            || dirn == "SameSouth" || dirn == "South") {
+            || dirn == "SouthSame" || dirn == "South") {
             // can only go south after going sw/se
-            ok &= (x_hops == 0 && !y_dirn);
+            int nxt_x = dirn.length() > 5 ? k_x : my_x, nxt_y = dirn.length() > 5 ? k_y : my_y - 1;
+            ok &= (nxt_x == dest_x && nxt_y >= dest_y);
         }
         if (ok) {
             outports.push_back(it->second);
         }
     }
+
+    for (auto it = m_outports_dirn2idx.begin(); it != m_outports_dirn2idx.end(); ++it) {
+        PortDirection dirn = it->first;
+        bool ok = true;
+        if (dirn.length() > 5) continue;
+        if (dirn == "Local") continue;
+        if (inport_dirn == "NorthWest" || inport_dirn == "NorthEast") {
+            ok &= (dirn == "South");
+        }
+        if (inport_dirn == "NorthSame" || inport_dirn == "North") {
+            ok &= (dirn == "South" || dirn == "SouthWest" || dirn == "SouthEast" || dirn == "SouthSame");
+        }
+        if (dirn == "East")     ok &= (x_hops > 0 && x_dirn);
+        if (dirn == "West")     ok &= (x_hops > 0 && !x_dirn);
+        if (dirn == "North")    ok &= (y_hops > 0 && y_dirn);
+        if (dirn == "South")    ok &= (y_hops > 0 && !y_dirn);
+        if (dirn == "SouthWest" || dirn == "SouthEast" 
+            || dirn == "SouthSame" || dirn == "South") {
+            // can only go south after going sw/se
+            int nxt_x = dirn.length() > 5 ? k_x : my_x, nxt_y = dirn.length() > 5 ? k_y : my_y - 1;
+            ok &= (nxt_x == dest_x && nxt_y >= dest_y);
+        }
+        if (ok) {
+            outports.push_back(it->second);
+        }
+    }
+    assert(outports.size());
     std::vector< std::pair<int, int> > outports_pair;
     for (int i = 0; i < outports.size(); ++i) {
         for (int j = 0; j < m_router->get_vc_per_vnet(); ++j) {
@@ -479,6 +520,58 @@ RoutingUnit::outportsComputeLongRange(RouteInfo route,
         }
     }
     assert(outports_pair.size());
+    return outports_pair;
+}
+
+std::vector < std::pair<int, int> >
+RoutingUnit::outportsComputeAny(RouteInfo route,
+                                int inport,
+                                PortDirection inport_dirn, int invc)
+{   
+    std::vector < int > outports;
+    [[maybe_unused]] int num_w = m_router->get_net_ptr()->getNumRows();
+    int num_h = num_w, num_d = num_w;
+    int my_id = m_router->get_id();
+    int my_x = my_id % num_w, my_y = (my_id / num_w) % num_h, my_z = my_id / (num_w * num_h);
+    int dest_id = route.dest_router;
+    int dest_x = dest_id % num_w, dest_y = (dest_id / num_w) % num_h, dest_z = dest_id / (num_w * num_h);
+    int x_hops = abs(dest_x - my_x), y_hops = abs(dest_y - my_y), z_hops = abs(dest_z - my_z);
+    int k_x = -1, k_y = -1, k_z = -1, flag = 0, vnet = route.vnet;
+    if (m_router->longLinkId != -1) {
+        k_x = m_router->longLinkId % num_w, k_y = (m_router->longLinkId / num_w) % num_h, k_z = m_router->longLinkId / (num_w * num_h);
+        if (abs(dest_x - k_x) + abs(dest_y - k_y) + abs(dest_z - k_z) + 1 < x_hops + y_hops + z_hops) 
+            flag = 1;
+    }
+    for (auto it = m_outports_dirn2idx.begin(); it != m_outports_dirn2idx.end(); ++it) {
+        PortDirection dirn = it->first;
+        if (dirn.length() <= 5)  continue;
+        bool ok = flag;
+        if (ok) {
+            outports.push_back(it->second);
+        }
+    }
+
+    for (auto it = m_outports_dirn2idx.begin(); it != m_outports_dirn2idx.end(); ++it) {
+        PortDirection dirn = it->first;
+        if (dirn == "Local") continue;
+        bool ok = true;
+        if (dirn == "East")     ok &= (x_hops > 0 && dest_x >= my_x);
+        if (dirn == "West")     ok &= (x_hops > 0 && dest_x <= my_x);
+        if (dirn == "North")    ok &= (y_hops > 0 && dest_y >= my_y);
+        if (dirn == "South")    ok &= (y_hops > 0 && dest_y <= my_y);
+        if (dirn == "Up")       ok &= (z_hops > 0 && dest_z >= my_z);
+        if (dirn == "Down")     ok &= (z_hops > 0 && dest_z <= my_z);
+        if (dirn.length() > 5)  ok &= flag;
+        if (ok) {
+            outports.push_back(it->second);
+        }
+    }
+    std::vector< std::pair<int, int> > outports_pair;
+    for (int i = 0; i < outports.size(); ++i) {
+        for (int j = 1; j < m_router->get_vc_per_vnet(); ++j) {
+            outports_pair.push_back(std::make_pair(outports[i], j + vnet * m_router->get_vc_per_vnet()));
+        }
+    }
     return outports_pair;
 }
 

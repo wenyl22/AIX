@@ -76,6 +76,18 @@ GarnetNetwork::GarnetNetwork(const Params &p)
     m_congestion_sensor = p.congestion_sensor;
 
     m_enable_fault_model = p.enable_fault_model;
+    m_escape_routing = p.escape_routing;
+    simTicks = p.simTicks;
+    if(m_enable_adaptive_routing) {
+        if (!m_enable_wormhole)
+            panic("Adaptive routing is only supported within wormhole flow control");
+    }
+    if (m_escape_routing != -1) {
+        if((RoutingAlgorithm)m_routing_algorithm != ANY_)
+            panic("Escape VC is only supported with ANY_ routing on Non-Escape VC");
+        if(!m_enable_adaptive_routing)
+            panic("Escape VC is only supported with Adaptive Routing");
+    }
     if (m_enable_fault_model)
         fault_model = p.fault_model;
 
@@ -415,12 +427,19 @@ GarnetNetwork::regStats()
         .name(name() + ".packet_queueing_latency")
         .flags(statistics::oneline)
         ;
+    
+    m_packets_in_network
+        .init(m_virtual_networks)
+        .name(name() + ".packets_in_network")
+        .flags(statistics::oneline)
+        ;
 
     for (int i = 0; i < m_virtual_networks; i++) {
         m_packets_received.subname(i, csprintf("vnet-%i", i));
         m_packets_injected.subname(i, csprintf("vnet-%i", i));
         m_packet_network_latency.subname(i, csprintf("vnet-%i", i));
         m_packet_queueing_latency.subname(i, csprintf("vnet-%i", i));
+        m_packets_in_network_per_cpu.subname(i, csprintf("vnet-%i", i));
     }
 
     m_avg_packet_vnet_latency
@@ -515,6 +534,10 @@ GarnetNetwork::regStats()
     m_received_packets_per_cpu = 
         sum(m_packets_received)/ getNumRouters();
 
+    m_packets_in_network_per_cpu
+        .name(name() + ".packets_in_network_per_cpu");
+    m_packets_in_network_per_cpu =
+        sum(m_packets_in_network) / getNumRouters();
     // Hops
     m_avg_hops.name(name() + ".average_hops");
     m_avg_hops = m_total_hops / sum(m_flits_received);

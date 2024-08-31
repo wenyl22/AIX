@@ -41,8 +41,7 @@ namespace ruby
 namespace garnet
 {
 
-OutVcState::OutVcState(int id, GarnetNetwork *network_ptr,
-    uint32_t consumerVcs)
+OutVcState::OutVcState(int id, GarnetNetwork* network_ptr, uint32_t consumerVcs, int buffer_size = 0)
     : m_time(0)
 {
     m_id = id;
@@ -53,11 +52,14 @@ OutVcState::OutVcState(int id, GarnetNetwork *network_ptr,
      * vnet is used throughout the given object.
      */
     int vnet = floor(id/consumerVcs);
-
-    if (network_ptr->get_vnet_type(vnet) == DATA_VNET_)
-        m_max_credit_count = network_ptr->getBuffersPerDataVC();
-    else
-        m_max_credit_count = network_ptr->getBuffersPerCtrlVC();
+    if(buffer_size == 0) {
+        if (network_ptr->get_vnet_type(vnet) == DATA_VNET_)
+            m_max_credit_count = network_ptr->getBuffersPerDataVC();
+        else
+            m_max_credit_count = network_ptr->getBuffersPerCtrlVC();
+    }
+    else m_max_credit_count = buffer_size;
+    // printf("Buffer size: %d\n", buffer_size);
     // wormhole enables each vc to hold 16 single-flit packets
     m_credit_count = m_max_credit_count;
     assert(m_credit_count >= 1);

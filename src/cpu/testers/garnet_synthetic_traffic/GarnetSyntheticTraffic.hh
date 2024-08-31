@@ -52,6 +52,7 @@ enum TrafficType {BIT_COMPLEMENT_ = 0,
                   TRANSPOSE_ = 6,
                   UNIFORM_RANDOM_ = 7,
                   HOTSPOT_ = 8,
+                  REAL_TRAFFIC_ = 9,
                   NUM_TRAFFIC_PATTERNS_};
 
 class Packet;
@@ -131,8 +132,13 @@ class GarnetSyntheticTraffic : public ClockedObject
     double injRate;
     int injVnet;
     int precision;
-    double hotSpotFactor;
+    int topodim;
     std::vector< int > hotSpotDest;
+    int hotSpotFactor;
+    std::string traffic_matrix_file;
+    std::vector< std::vector< uint64_t > > traffic_matrix;
+    std::vector< uint64_t > traffic_matrix_row_sum;
+    uint64_t max_row_sum;
 
     const Cycles responseLimit;
 

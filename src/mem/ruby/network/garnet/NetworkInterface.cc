@@ -103,7 +103,7 @@ NetworkInterface::addOutPort(NetworkLink *out_link,
         // instantiating the NI flit buffers
         for (int i = 0; i < m_num_vcs; i++) {
             m_ni_out_vcs_enqueue_time[i] = Tick(INFINITE_);
-            outVcState.emplace_back(i, m_net_ptr, consumerVcs);
+            outVcState.emplace_back(i, m_net_ptr, consumerVcs, 0);
         }
 
         // Reset VC Per VNET for input links already instantiated

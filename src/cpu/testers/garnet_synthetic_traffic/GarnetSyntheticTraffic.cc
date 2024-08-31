@@ -91,6 +91,10 @@ GarnetSyntheticTraffic::GarnetSyntheticTraffic(const Params &p)
       injVnet(p.inj_vnet),
       precision(p.precision),
       responseLimit(p.response_limit),
+      topodim(p.topodim),
+      hotSpotDest(p.hotspots),
+      hotSpotFactor(p.hotspot_factor),
+      traffic_matrix_file(p.traffic_matrix),
       requestorId(p.system->getRequestorId(this))
 {
     // set up counters
@@ -106,6 +110,30 @@ GarnetSyntheticTraffic::GarnetSyntheticTraffic(const Params &p)
     id = TESTER_NETWORK++;
     DPRINTF(GarnetSyntheticTraffic,"Config Created: Name = %s , and id = %d\n",
             name(), id);
+    max_row_sum = 0;
+
+    if (traffic == REAL_TRAFFIC_) {
+        std::ifstream file(traffic_matrix_file);
+        // assert that the file can be successfully opened
+        if (!file.is_open()) {
+            fatal("Unable to open traffic matrix file: %s\n",
+                  traffic_matrix_file);
+        }
+        std::string line;
+        while (std::getline(file, line)) {
+            std::vector< uint64_t > row;
+            std::istringstream iss(line);
+            int val, sum = 0;
+            while (iss >> val) {
+                row.push_back(val);
+                sum += val;
+            }
+            traffic_matrix.push_back(row);
+            traffic_matrix_row_sum.push_back(sum);
+            max_row_sum = std::max(max_row_sum, (uint64_t) sum);
+        }
+        file.close();
+    }
 }
 
 Port &
@@ -167,6 +195,10 @@ GarnetSyntheticTraffic::tick()
         if (singleSender >= 0 && id != singleSender)
             senderEnable = false;
 
+        if (max_row_sum > 0) {
+            senderEnable &= (random_mt.random<uint64_t>(0, max_row_sum - 1) <
+                            traffic_matrix_row_sum[id]);
+        }
         if (senderEnable)
             generatePkt();
     }
@@ -185,12 +217,18 @@ GarnetSyntheticTraffic::generatePkt()
 {
     int num_destinations = numDestinations;
     int radix = (int) sqrt(num_destinations);
+    if ( topodim == 3 ) {
+        radix = (int) cbrt(num_destinations);
+        assert(radix * radix * radix == num_destinations);
+    }
     unsigned destination = id;
     int dest_x = -1;
     int dest_y = -1;
+    int dest_z = -1;
     int source = id;
     int src_x = id%radix;
-    int src_y = id/radix;
+    int src_y = id/radix % radix;
+    int src_z = id/(radix*radix);
 
     if (singleDest >= 0)
     {
@@ -229,9 +267,17 @@ GarnetSyntheticTraffic::generatePkt()
         else
             destination = (source*2 - num_destinations + 1);
     } else if (traffic == TRANSPOSE_) {
+        if (topodim == 2) {
             dest_x = src_y;
             dest_y = src_x;
             destination = dest_y*radix + dest_x;
+        } else {
+            // (x, y, z) -> (y, x, z)
+            dest_x = src_y;
+            dest_y = src_x;
+            dest_z = src_z;
+            destination = dest_z*radix*radix + dest_y*radix + dest_x;
+        }
     } else if (traffic == TORNADO_) {
         dest_x = (src_x + (int) ceil(radix/2) - 1) % radix;
         dest_y = src_y;
@@ -244,10 +290,21 @@ GarnetSyntheticTraffic::generatePkt()
         } else {
             destination = hotSpotDest[random_mt.random<unsigned>(0, hotSpotDest.size() - 1)];
         }
+    } else if (traffic == REAL_TRAFFIC_) {
+        std::vector< uint64_t > row = traffic_matrix[source];
+        uint64_t row_sum = traffic_matrix_row_sum[source];
+        uint64_t rand_num = random_mt.random<uint64_t>(0, row_sum - 1);
+        for (unsigned i = 0; i < row.size(); i++) {
+            if (rand_num < row[i]) {
+                destination = i + src_x * radix;
+                break;
+            }
+            rand_num -= row[i];
+        }
     }
-    else {
-        fatal("Unknown Traffic Type: %s!\n", traffic);
-    }
+    // else {
+    //     fatal("Unknown Traffic Type: %s!\n", traffic);
+    // }
 
     // The source of the packets is a cache.
     // The destination of the packets is a directory.
@@ -343,6 +400,7 @@ GarnetSyntheticTraffic::initTrafficType()
     trafficStringToEnum["transpose"] = TRANSPOSE_;
     trafficStringToEnum["uniform_random"] = UNIFORM_RANDOM_;
     trafficStringToEnum["hotspot"] = HOTSPOT_;
+    trafficStringToEnum["real_traffic"] = REAL_TRAFFIC_;
 }
 
 void
@@ -360,3 +418,4 @@ GarnetSyntheticTraffic::printAddr(Addr a)
 }
 
 } // namespace gem5
+ 

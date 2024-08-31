@@ -129,7 +129,9 @@ SwitchAllocator::arbitrate_inports()
                     outport = outvc = -1;
                     if (m_router->get_net_ptr()->getAdaptiveRoutingEnabled()) {
                         std::vector < std::pair<int, int> > outports_pair = 
-                            m_router->routes_compute(input_unit->peekTopFlit(invc)->get_route(), inport, input_unit->get_direction(), invc), candidates;
+                            m_router->routes_compute(input_unit->peekTopFlit(invc)->get_route(), 
+                            inport, input_unit->get_direction(), invc),
+                            candidates;
                         
                         for (auto it = outports_pair.begin(); it != outports_pair.end(); ) {
                             int cur_outport = it->first, cur_outvc = it->second;
@@ -154,7 +156,6 @@ SwitchAllocator::arbitrate_inports()
                                 ext = 0;
                             }
                         }
-                        assert(outvc == m_router->getOutputUnit(outport)->get_richest_vc(vnet));
                     } else {
                         outport = m_router->route_compute(input_unit->peekTopFlit(invc)->get_route(), inport, input_unit->get_direction());
                         outvc = m_router->getOutputUnit(outport)->get_richest_vc(vnet);
