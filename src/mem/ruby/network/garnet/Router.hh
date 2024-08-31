@@ -150,12 +150,13 @@ class Router : public BasicRouter, public Consumer
 
     bool functionalRead(Packet *pkt, WriteMask &mask);
     uint32_t functionalWrite(Packet *);
+    uint32_t getBuffers() { return m_buffers; }
 
     int longLinkId;
   private:
     Cycles m_latency;
     uint32_t m_virtual_networks, m_vc_per_vnet, m_num_vcs;
-    uint32_t m_bit_width;
+    uint32_t m_bit_width, m_buffers;
     GarnetNetwork *m_network_ptr;
 
     RoutingUnit routingUnit;

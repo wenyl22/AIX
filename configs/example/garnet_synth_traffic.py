@@ -58,6 +58,7 @@ parser.add_argument(
         "shuffle",
         "transpose",
         "hotspot",
+        "real_traffic",
     ],
 )
 
@@ -134,9 +135,10 @@ parser.add_argument(
 
 parser.add_argument(
     "--hotspots",
-    type = list,
-    default = [5, 11, 12],
-    help = "List of hotspots",
+    nargs = '+',
+    type = int,
+    help = "List of hotspots (routers) in the network",
+    default = [],
 )
 
 parser.add_argument(
@@ -145,13 +147,23 @@ parser.add_argument(
     default = 20,
     help = "Factor in percentage to increase the prob of hotspots to be selected as destination",
 )
+
+parser.add_argument(
+    "--best-effort",
+    action = 'store_true',
+    default = False,
+    help = "Use best effort routing",
+)
+
 #
 # Add the ruby specific and protocol specific options
 #
 Ruby.define_options(parser)
 
 args = parser.parse_args()
-
+tpdim = 2
+if "Cube" in args.topology:
+    tpdim = 3
 cpus = [
     GarnetSyntheticTraffic(
         num_packets_max=args.num_packets_max,
@@ -163,8 +175,10 @@ cpus = [
         inj_vnet=args.inj_vnet,
         precision=args.precision,
         num_dest=args.num_dirs,
+        topodim=tpdim,
         hotspots=args.hotspots,
-        hotspot_factor=args.hotspot_factor / 100.0,
+        hotspot_factor=args.hotspot_factor,
+        traffic_matrix=args.traffic_matrix,
     )
     for i in range(args.num_cpus)
 ]

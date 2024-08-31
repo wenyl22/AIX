@@ -76,13 +76,22 @@ class GarnetNetwork : public Network
     int getNumCols() { return m_num_cols; }
 
     // for network
-    uint32_t getNiFlitSize() const { return m_ni_flit_size; }
-    uint32_t getBuffersPerDataVC() { return m_buffers_per_data_vc; }
-    uint32_t getBuffersPerCtrlVC() { return m_buffers_per_ctrl_vc; }
+    uint32_t getNiFlitSize() const { 
+        return m_ni_flit_size;
+    }
+    uint32_t getBuffersPerDataVC() {
+        return m_buffers_per_data_vc; 
+    }
+    uint32_t getBuffersPerCtrlVC() {
+        return m_buffers_per_ctrl_vc;
+    }
     int getRoutingAlgorithm() const { return m_routing_algorithm; }
     int getCompeteAlgorithm() const { return m_compete_algorithm; }
+    int getEscapeAlgorithm() const { return m_escape_routing; }
 
     bool isFaultModelEnabled() const { return m_enable_fault_model; }
+
+    
     FaultModel* fault_model;
 
 
@@ -121,8 +130,14 @@ class GarnetNetwork : public Network
     void print(std::ostream& out) const;
 
     // increment counters
-    void increment_injected_packets(int vnet) { m_packets_injected[vnet]++; }
-    void increment_received_packets(int vnet) { m_packets_received[vnet]++; }
+    void increment_injected_packets(int vnet) {
+        m_packets_in_network[vnet] += simTicks - (uint64_t)curTick();
+        m_packets_injected[vnet]++;
+    }
+    void increment_received_packets(int vnet) {
+        m_packets_in_network[vnet] -= simTicks - (uint64_t)curTick() + 1;
+        m_packets_received[vnet]++;
+    }
 
     void
     increment_packet_network_latency(Tick latency, int vnet)
@@ -163,7 +178,7 @@ class GarnetNetwork : public Network
     bool getHiRyEnabled() { return m_enable_hiry; }
     bool getAdaptiveRoutingEnabled() { return m_enable_adaptive_routing; }
     int getCongestionSensor() { return m_congestion_sensor; }
-
+    int getEscapeVCEnabled() {return m_escape_routing != -1;}
   protected:
     // Configuration
     int m_num_rows;
@@ -179,6 +194,8 @@ class GarnetNetwork : public Network
     bool m_enable_hiry;
     bool m_enable_adaptive_routing;
     int m_congestion_sensor;
+    int m_escape_routing;
+    uint64_t simTicks;
 
     // Statistical variables
     statistics::Vector m_packets_received;
@@ -196,18 +213,20 @@ class GarnetNetwork : public Network
     statistics::Vector m_flits_injected;
     statistics::Vector m_flit_network_latency;
     statistics::Vector m_flit_queueing_latency;
+    statistics::Vector m_packets_in_network;
 
     statistics::Formula m_avg_flit_vnet_latency;
     statistics::Formula m_avg_flit_vqueue_latency;
     statistics::Formula m_avg_flit_network_latency;
     statistics::Formula m_avg_flit_queueing_latency;
     statistics::Formula m_avg_flit_latency;
+    statistics::Formula m_received_packets_per_cpu;
+    statistics::Formula m_packets_in_network_per_cpu;
 
     statistics::Scalar m_total_ext_in_link_utilization;
     statistics::Scalar m_total_ext_out_link_utilization;
     statistics::Scalar m_total_int_link_utilization;
     statistics::Scalar m_average_link_utilization;
-    statistics::Formula m_received_packets_per_cpu;
     statistics::Vector m_average_vc_load;
 
     statistics::Scalar  m_total_hops;

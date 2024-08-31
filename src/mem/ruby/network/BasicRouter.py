@@ -40,3 +40,5 @@ class BasicRouter(ClockedObject):
     latency = Param.Cycles(1, "number of cycles inside router")
 
     longLinkId = Param.Int(-1, "ID of the destination router of the long link")
+
+    buffers = Param.Unsigned(0, "number of buffers in the router")

@@ -1,0 +1,290 @@
+Running experiment with the following parameters: injection rate = 0.01
+packets_injected = 63679                       (Unspecified)
+packets_received = 63674                       (Unspecified)
+average_packet_queueing_latency = 2                       (Unspecified)
+average_packet_network_latency = 13.538807                       (Unspecified)
+average_packet_latency = 15.538807                       (Unspecified)
+average_hops = 5.260467                       (Unspecified)
+reception_rate = 0.00994906
+packets_in_network_per_cpu = 13470.359375
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.04
+packets_injected = 255713                       (Unspecified)
+packets_received = 255695                       (Unspecified)
+average_packet_queueing_latency = 2                       (Unspecified)
+average_packet_network_latency = 13.569225                       (Unspecified)
+average_packet_latency = 15.569225                       (Unspecified)
+average_hops = 5.247830                       (Unspecified)
+reception_rate = 0.0399523
+packets_in_network_per_cpu = 54214.453125
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.07
+packets_injected = 447381                       (Unspecified)
+packets_received = 447343                       (Unspecified)
+average_packet_queueing_latency = 2                       (Unspecified)
+average_packet_network_latency = 13.629606                       (Unspecified)
+average_packet_latency = 15.629606                       (Unspecified)
+average_hops = 5.252249                       (Unspecified)
+reception_rate = 0.0698973
+packets_in_network_per_cpu = 95273.203125
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.10
+packets_injected = 638983                       (Unspecified)
+packets_received = 638942                       (Unspecified)
+average_packet_queueing_latency = 2                       (Unspecified)
+average_packet_network_latency = 13.691689                       (Unspecified)
+average_packet_latency = 15.691689                       (Unspecified)
+average_hops = 5.256516                       (Unspecified)
+reception_rate = 0.0998347
+packets_in_network_per_cpu = 136696.250000
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.13
+packets_injected = 830148                       (Unspecified)
+packets_received = 830088                       (Unspecified)
+average_packet_queueing_latency = 2                       (Unspecified)
+average_packet_network_latency = 13.731480                       (Unspecified)
+average_packet_latency = 15.731480                       (Unspecified)
+average_hops = 5.249757                       (Unspecified)
+reception_rate = 0.129701
+packets_in_network_per_cpu = 178105.390625
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.16
+packets_injected = 1022723                       (Unspecified)
+packets_received = 1022648                       (Unspecified)
+average_packet_queueing_latency = 2                       (Unspecified)
+average_packet_network_latency = 13.783059                       (Unspecified)
+average_packet_latency = 15.783059                       (Unspecified)
+average_hops = 5.248124                       (Unspecified)
+reception_rate = 0.159789
+packets_in_network_per_cpu = 220247.734375
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.19
+packets_injected = 1214866                       (Unspecified)
+packets_received = 1214778                       (Unspecified)
+average_packet_queueing_latency = 2                       (Unspecified)
+average_packet_network_latency = 13.846777                       (Unspecified)
+average_packet_latency = 15.846777                       (Unspecified)
+average_hops = 5.251574                       (Unspecified)
+reception_rate = 0.189809
+packets_in_network_per_cpu = 262836
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.22
+packets_injected = 1406604                       (Unspecified)
+packets_received = 1406508                       (Unspecified)
+average_packet_queueing_latency = 2                       (Unspecified)
+average_packet_network_latency = 13.907511                       (Unspecified)
+average_packet_latency = 15.907511                       (Unspecified)
+average_hops = 5.251638                       (Unspecified)
+reception_rate = 0.219767
+packets_in_network_per_cpu = 305653.390625
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.25
+packets_injected = 1598741                       (Unspecified)
+packets_received = 1598623                       (Unspecified)
+average_packet_queueing_latency = 2                       (Unspecified)
+average_packet_network_latency = 13.978621                       (Unspecified)
+average_packet_latency = 15.978621                       (Unspecified)
+average_hops = 5.255114                       (Unspecified)
+reception_rate = 0.249785
+packets_in_network_per_cpu = 349182.109375
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.28
+packets_injected = 1791547                       (Unspecified)
+packets_received = 1791428                       (Unspecified)
+average_packet_queueing_latency = 2                       (Unspecified)
+average_packet_network_latency = 14.047163                       (Unspecified)
+average_packet_latency = 16.047163                       (Unspecified)
+average_hops = 5.253751                       (Unspecified)
+reception_rate = 0.279911
+packets_in_network_per_cpu = 393211.140625
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.31
+packets_injected = 1983265                       (Unspecified)
+packets_received = 1983102                       (Unspecified)
+average_packet_queueing_latency = 2                       (Unspecified)
+average_packet_network_latency = 14.103701                       (Unspecified)
+average_packet_latency = 16.103701                       (Unspecified)
+average_hops = 5.245526                       (Unspecified)
+reception_rate = 0.30986
+packets_in_network_per_cpu = 437037.656250
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.34
+packets_injected = 2175468                       (Unspecified)
+packets_received = 2175305                       (Unspecified)
+average_packet_queueing_latency = 2                       (Unspecified)
+average_packet_network_latency = 14.193543                       (Unspecified)
+average_packet_latency = 16.193543                       (Unspecified)
+average_hops = 5.248444                       (Unspecified)
+reception_rate = 0.339891
+packets_in_network_per_cpu = 482447.875000
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.37
+packets_injected = 2367267                       (Unspecified)
+packets_received = 2367094                       (Unspecified)
+average_packet_queueing_latency = 2.000000                       (Unspecified)
+average_packet_network_latency = 14.297087                       (Unspecified)
+average_packet_latency = 16.297087                       (Unspecified)
+average_hops = 5.251951                       (Unspecified)
+reception_rate = 0.369858
+packets_in_network_per_cpu = 528811.390625
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.40
+packets_injected = 2559498                       (Unspecified)
+packets_received = 2559302                       (Unspecified)
+average_packet_queueing_latency = 2.000001                       (Unspecified)
+average_packet_network_latency = 14.404440                       (Unspecified)
+average_packet_latency = 16.404441                       (Unspecified)
+average_hops = 5.250777                       (Unspecified)
+reception_rate = 0.399891
+packets_in_network_per_cpu = 576046.906250
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.43
+packets_injected = 2751035                       (Unspecified)
+packets_received = 2750828                       (Unspecified)
+average_packet_queueing_latency = 2.000004                       (Unspecified)
+average_packet_network_latency = 14.532949                       (Unspecified)
+average_packet_latency = 16.532953                       (Unspecified)
+average_hops = 5.252388                       (Unspecified)
+reception_rate = 0.429817
+packets_in_network_per_cpu = 624677.687500
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.46
+packets_injected = 2943020                       (Unspecified)
+packets_received = 2942788                       (Unspecified)
+average_packet_queueing_latency = 2.000075                       (Unspecified)
+average_packet_network_latency = 14.676253                       (Unspecified)
+average_packet_latency = 16.676328                       (Unspecified)
+average_hops = 5.250212                       (Unspecified)
+reception_rate = 0.459811
+packets_in_network_per_cpu = 674864.218750
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.49
+packets_injected = 3134624                       (Unspecified)
+packets_received = 3134409                       (Unspecified)
+average_packet_queueing_latency = 2.000047                       (Unspecified)
+average_packet_network_latency = 14.855923                       (Unspecified)
+average_packet_latency = 16.855969                       (Unspecified)
+average_hops = 5.251159                       (Unspecified)
+reception_rate = 0.489751
+packets_in_network_per_cpu = 727601.703125
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.52
+packets_injected = 3325927                       (Unspecified)
+packets_received = 3325661                       (Unspecified)
+average_packet_queueing_latency = 2.000296                       (Unspecified)
+average_packet_network_latency = 15.079950                       (Unspecified)
+average_packet_latency = 17.080247                       (Unspecified)
+average_hops = 5.249938                       (Unspecified)
+reception_rate = 0.519635
+packets_in_network_per_cpu = 783642.453125
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.55
+packets_injected = 3517517                       (Unspecified)
+packets_received = 3517253                       (Unspecified)
+average_packet_queueing_latency = 2.002485                       (Unspecified)
+average_packet_network_latency = 15.373980                       (Unspecified)
+average_packet_latency = 17.376465                       (Unspecified)
+average_hops = 5.250029                       (Unspecified)
+reception_rate = 0.549571
+packets_in_network_per_cpu = 844946.093750
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.58
+packets_injected = 3709424                       (Unspecified)
+packets_received = 3709111                       (Unspecified)
+average_packet_queueing_latency = 2.011991                       (Unspecified)
+average_packet_network_latency = 15.793260                       (Unspecified)
+average_packet_latency = 17.805251                       (Unspecified)
+average_hops = 5.249596                       (Unspecified)
+reception_rate = 0.579549
+packets_in_network_per_cpu = 915348.640625
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.61
+packets_injected = 3900548                       (Unspecified)
+packets_received = 3900228                       (Unspecified)
+average_packet_queueing_latency = 2.091609                       (Unspecified)
+average_packet_network_latency = 16.497617                       (Unspecified)
+average_packet_latency = 18.589226                       (Unspecified)
+average_hops = 5.250340                       (Unspecified)
+reception_rate = 0.609411
+packets_in_network_per_cpu = 1005433.375000
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.64
+packets_injected = 4092165                       (Unspecified)
+packets_received = 4091804                       (Unspecified)
+average_packet_queueing_latency = 3.296523                       (Unspecified)
+average_packet_network_latency = 18.047118                       (Unspecified)
+average_packet_latency = 21.343641                       (Unspecified)
+average_hops = 5.250728                       (Unspecified)
+reception_rate = 0.639344
+packets_in_network_per_cpu = 1153891.812500
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.67
+packets_injected = 4263540                       (Unspecified)
+packets_received = 4263030                       (Unspecified)
+average_packet_queueing_latency = 473.487901                       (Unspecified)
+average_packet_network_latency = 21.794904                       (Unspecified)
+average_packet_latency = 495.282805                       (Unspecified)
+average_hops = 5.247527                       (Unspecified)
+reception_rate = 0.666098
+packets_in_network_per_cpu = 1451873.031250
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.70
+packets_injected = 4322412                       (Unspecified)
+packets_received = 4321810                       (Unspecified)
+average_packet_queueing_latency = 3082.384803                       (Unspecified)
+average_packet_network_latency = 24.138105                       (Unspecified)
+average_packet_latency = 3106.522907                       (Unspecified)
+average_hops = 5.219558                       (Unspecified)
+reception_rate = 0.675283
+packets_in_network_per_cpu = 1630165.875000
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.73
+packets_injected = 4343864                       (Unspecified)
+packets_received = 4343261                       (Unspecified)
+average_packet_queueing_latency = 5775.607499                       (Unspecified)
+average_packet_network_latency = 25.901904                       (Unspecified)
+average_packet_latency = 5801.509403                       (Unspecified)
+average_hops = 5.186984                       (Unspecified)
+reception_rate = 0.678635
+packets_in_network_per_cpu = 1757987.968750
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.76
+packets_injected = 4340980                       (Unspecified)
+packets_received = 4340384                       (Unspecified)
+average_packet_queueing_latency = 8716.903338                       (Unspecified)
+average_packet_network_latency = 26.688170                       (Unspecified)
+average_packet_latency = 8743.591508                       (Unspecified)
+average_hops = 5.164452                       (Unspecified)
+reception_rate = 0.678185
+packets_in_network_per_cpu = 1810143.375000
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.79
+packets_injected = 4340579                       (Unspecified)
+packets_received = 4339978                       (Unspecified)
+average_packet_queueing_latency = 11115.234705                       (Unspecified)
+average_packet_network_latency = 27.069453                       (Unspecified)
+average_packet_latency = 11142.304158                       (Unspecified)
+average_hops = 5.145570                       (Unspecified)
+reception_rate = 0.678122
+packets_in_network_per_cpu = 1835820.250000
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.82
+packets_injected = 4341094                       (Unspecified)
+packets_received = 4340470                       (Unspecified)
+average_packet_queueing_latency = 13297.707507                       (Unspecified)
+average_packet_network_latency = 27.441847                       (Unspecified)
+average_packet_latency = 13325.149354                       (Unspecified)
+average_hops = 5.122277                       (Unspecified)
+reception_rate = 0.678198
+packets_in_network_per_cpu = 1861302.453125
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.85
+packets_injected = 4338356                       (Unspecified)
+packets_received = 4337754                       (Unspecified)
+average_packet_queueing_latency = 15282.620230                       (Unspecified)
+average_packet_network_latency = 27.755846                       (Unspecified)
+average_packet_latency = 15310.376077                       (Unspecified)
+average_hops = 5.107583                       (Unspecified)
+reception_rate = 0.677774
+packets_in_network_per_cpu = 1881425.781250
+--------------------------------

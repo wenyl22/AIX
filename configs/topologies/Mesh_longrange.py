@@ -1,5 +1,6 @@
 from m5.params import *
 from m5.objects import *
+import random
 
 from common import FileSystemConfig
 
@@ -63,8 +64,14 @@ class Mesh_longrange(SimpleTopology):
                     traffic_matrix[i][j] = 1
             for i in options.hotspots:
                 for j in range(num_routers):
-                    traffic_matrix[i][j] += options.hotspot_factor
-
+                    traffic_matrix[j][i] += options.hotspot_factor / 100.0
+        elif synthetic == "real_traffic":
+            with open(options.traffic_matrix, 'r') as f:
+                lines = f.readlines()
+                for i in range(num_routers):
+                    parts = lines[i].split(' ')
+                    for j in range(num_routers):
+                        traffic_matrix[i][j] = int(parts[j])
         if options.single_sender_id != -1:
             for i in range(num_routers):
                 if i != options.single_sender_id:
@@ -78,7 +85,24 @@ class Mesh_longrange(SimpleTopology):
             for j in range(num_routers):
                 traffic_matrix[i][j] /= sum_traffic
         return traffic_matrix
-    def caculateLongRangeLinks(self, options, num_rows, num_columns):
+    def caculateBenifit(self, options, Links, To, num_rows, num_columns):
+        num_routers = num_rows * num_columns
+        sum_d = 0
+        sum_rd = 0
+        for i in range(num_routers):
+            for j in range(num_routers):
+                i_x = i % num_columns
+                i_y = i // num_columns
+                j_x = j % num_columns
+                j_y = j // num_columns
+                sum_d += options.traffic_matrix[i][j] * (abs(i_x - j_x) + abs(i_y - j_y))
+                if To[i] != -1:
+                    sum_rd += options.traffic_matrix[i][j] * min(abs(i_x - j_x) + abs(i_y - j_y), 1 + abs(j_x - To[i] % num_columns) + abs(j_y - To[i] // num_columns))
+                else:
+                    sum_rd += options.traffic_matrix[i][j] * (abs(i_x - j_x) + abs(i_y - j_y))
+        print(sum_d, sum_rd, 1 - sum_rd / sum_d)
+
+    def caculateLongRangeLinks(self, options, num_rows, num_columns):            
         num_routers = num_rows * num_columns
         Links = []
         To = [-1] * num_routers
@@ -106,28 +130,38 @@ class Mesh_longrange(SimpleTopology):
                             max_j = j
             if max_i == -1:
                 break
-            print(max_i, max_j, max_d)
             Links.append((max_i, max_j))
             To[max_i] = max_j
             To[max_j] = max_i
             options.budget -= ((max_i % num_columns - max_j % num_columns)**2 + abs(max_i // num_columns - max_j // num_columns)**2)**0.5
-        sum_d = 0
-        sum_rd = 0
-        for i in range(num_routers):
-            for j in range(num_routers):
-                i_x = i % num_columns
-                i_y = i // num_columns
-                j_x = j % num_columns
-                j_y = j // num_columns
-                sum_d += options.traffic_matrix[i][j] * (abs(i_x - j_x) + abs(i_y - j_y))
-                if To[i] != -1:
-                    sum_rd += options.traffic_matrix[i][j] * min(abs(i_x - j_x) + abs(i_y - j_y), 1 + abs(j_x - To[i] % num_columns) + abs(j_y - To[i] // num_columns))
-                else:
-                    sum_rd += options.traffic_matrix[i][j] * (abs(i_x - j_x) + abs(i_y - j_y))
+            print(max_d, max_i, max_j)
         print(Links)
-        print(sum_d, sum_rd, 1 - sum_rd/sum_d)
+        self.caculateBenifit(options, Links, To, num_rows, num_columns)
         return Links
-
+    def randomAddLongRangeLinks(self, options, num_rows, num_columns):
+        num_routers = num_rows * num_columns
+        Links = []
+        To = [-1] * num_routers
+        cnt = 0
+        while cnt < 10:
+            i = random.randint(0, num_routers - 1)
+            j = random.randint(0, num_routers - 1)
+            i_x = i % num_columns
+            i_y = i // num_columns
+            j_x = j % num_columns
+            j_y = j // num_columns
+            dst = ((i_x - j_x)**2 + (i_y - j_y)**2)**0.5
+            if dst <= 1:
+                continue
+            if To[i] == -1 and To[j] == -1 and options.budget >= dst:
+                Links.append((i, j))
+                To[i] = j
+                To[j] = i
+                options.budget -= dst
+            cnt += 1
+        print(Links)
+        self.caculateBenifit(options, Links, To, num_rows, num_columns)
+        return Links
     def makeTopology(self, options, network, IntLink, ExtLink, Router):
         nodes = self.nodes
         num_routers = options.num_cpus
@@ -144,19 +178,20 @@ class Mesh_longrange(SimpleTopology):
         assert num_rows > 0 and num_rows <= num_routers
         num_columns = int(num_routers / num_rows)
         assert num_columns * num_rows == num_routers
-
-        if options.traffic_matrix == None:
-            options.traffic_matrix = self.initTrafficFreqFromSyntheticType(options, num_rows, num_columns)
-        else: # read from file
-            options.traffic_matrix = [[float(j) for j in i.split()] for i in open(options.traffic_matrix).read().split('\n') if i != '']
-        Links = self.caculateLongRangeLinks(options, num_rows, num_columns)
-        # Create the routers in the mesh
+        options.traffic_matrix = self.initTrafficFreqFromSyntheticType(options, num_rows, num_columns)
+        if options.best_effort:
+            Links = self.caculateLongRangeLinks(options, num_rows, num_columns)
+        else:
+            Links = self.randomAddLongRangeLinks(options, num_rows, num_columns)
         longLinkId = [-1] * num_routers
         for (i, j) in Links:
             longLinkId[i] = j
             longLinkId[j] = i
         routers = [
-            Router(router_id=i, latency=router_latency, longLinkId=longLinkId[i])
+            Router(router_id=i, latency=router_latency,
+                longLinkId=longLinkId[i],
+                buffers=options.buffers_per_ctrl_vc + (longLinkId[i] != -1
+                ) * options.buffers_per_ctrl_vc) 
             for i in range(num_routers)
         ]
         network.routers = routers
@@ -208,6 +243,58 @@ class Mesh_longrange(SimpleTopology):
 
         # Create the mesh links.
         int_links = []
+        # Long range links
+        for k, (i, j) in enumerate(Links):
+            i_x = i % num_columns
+            i_y = i // num_columns
+            j_x = j % num_columns
+            j_y = j // num_columns
+            dirn = ""
+            rev_dirn = ""
+            if i_y < j_y:
+                dirn += "North"
+                rev_dirn += "South"
+            elif i_y > j_y:
+                dirn += "South"
+                rev_dirn += "North"
+            elif i_y == j_y:
+                dirn += "Same"
+                rev_dirn += "Same"
+
+            if i_x < j_x:
+                dirn += "East"
+                rev_dirn += "West"
+            elif i_x > j_x:
+                dirn += "West"
+                rev_dirn += "East"
+            elif i_x == j_x:
+                dirn += "Same"
+                rev_dirn += "Same"
+
+            int_links.append(
+                IntLink(
+                    link_id=link_count,
+                    src_node=routers[i],
+                    dst_node=routers[j],
+                    src_outport=dirn,
+                    dst_inport=rev_dirn,
+                    latency=link_latency,
+                    weight=4,
+                )
+            )
+
+            int_links.append(
+                IntLink(
+                    link_id=link_count + 1,
+                    src_node=routers[j],
+                    dst_node=routers[i],
+                    src_outport=rev_dirn,
+                    dst_inport=dirn,
+                    latency=link_latency,
+                    weight=4,
+                )
+            )
+            link_count += 2
 
         # East output to West input links (weight = 1)
         for row in range(num_rows):
@@ -284,57 +371,6 @@ class Mesh_longrange(SimpleTopology):
                         )
                     )
                     link_count += 1
-        for (i, j) in Links:
-            i_x = i % num_columns
-            i_y = i // num_columns
-            j_x = j % num_columns
-            j_y = j // num_columns
-            dirn = ""
-            rev_dirn = ""
-            if i_y < j_y:
-                dirn += "North"
-                rev_dirn += "South"
-            elif i_y > j_y:
-                dirn += "South"
-                rev_dirn += "North"
-            elif i_y == j_y:
-                dirn += "Same"
-                rev_dirn += "Same"
-
-            if i_x < j_x:
-                dirn += "East"
-                rev_dirn += "West"
-            elif i_x > j_x:
-                dirn += "West"
-                rev_dirn += "East"
-            elif i_x == j_x:
-                dirn += "Same"
-                rev_dirn += "Same"
-
-            int_links.append(
-                IntLink(
-                    link_id=link_count,
-                    src_node=routers[i],
-                    dst_node=routers[j],
-                    src_outport=dirn,
-                    dst_inport=rev_dirn,
-                    latency=link_latency,
-                    weight=3,
-                )
-            )
-
-            int_links.append(
-                IntLink(
-                    link_id=link_count + 1,
-                    src_node=routers[j],
-                    dst_node=routers[i],
-                    src_outport=rev_dirn,
-                    dst_inport=dirn,
-                    latency=link_latency,
-                    weight=3,
-                )
-            )
-            link_count += 2
 
         network.int_links = int_links
 

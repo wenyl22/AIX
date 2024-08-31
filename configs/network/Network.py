@@ -161,7 +161,15 @@ def define_options(parser):
         default=4,
         help="""congestion sensor granularity in garnet network.""",
     )
-
+    
+    parser.add_argument(
+        "--escape-routing",
+        action="store",
+        type=int,
+        default=-1,
+        help="routing algorithm for escape VC in garnet network.",
+    )
+    
 
 def create_network(options, ruby):
 
@@ -218,6 +226,8 @@ def init_network(options, network, InterfaceClass):
         network.adaptive_routing = options.adaptive_routing
         network.buffers_per_ctrl_vc = options.buffers_per_ctrl_vc
         network.congestion_sensor = options.congestion_sensor
+        network.escape_routing = options.escape_routing
+        network.simTicks = options.sim_cycles
 
         # Create Bridges and connect them to the corresponding links
         for intLink in network.int_links:

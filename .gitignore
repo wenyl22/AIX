@@ -32,9 +32,7 @@ configs/example/memcheck.cfg
 configs/dram/lowp_sweep.cfg
 .pyenv
 .vscode
-plot.py
-src/mem/ruby/network/garnet/README.md
-*.sh
-*.png
-*.txt
 config
+exp*/
+real_traffic/*/*.rtp
+real_traffic/*/*.stp

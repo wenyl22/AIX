@@ -59,6 +59,7 @@ Router::Router(const Params &p)
     m_input_unit.clear();
     m_output_unit.clear();
     longLinkId = p.longLinkId;
+    m_buffers = p.buffers;
 }
 
 void

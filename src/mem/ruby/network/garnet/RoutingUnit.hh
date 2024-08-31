@@ -101,6 +101,10 @@ class RoutingUnit
                                 int inport, int invc);
     bool sendAllowedLongRange(PortDirection input_dirn,
                                                 PortDirection output_dirn);
+    // Any Direction Routing for Arbitrary Topology
+    std::vector < std::pair<int, int> > outportsComputeAny(RouteInfo route,
+                                int inport,
+                                PortDirection inport_dirn, int invc);
     // Returns true if vnet is present in the vector
     // of vnets or if the vector supports all vnets.
     bool supportsVnet(int vnet, std::vector<int> sVnets);

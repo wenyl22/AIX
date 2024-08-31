@@ -1,0 +1,334 @@
+Global frequency set at 2000000000 ticks per second
+m_nodes: 32
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.0.0.1
+gem5 compiled Aug 30 2024 19:15:48
+gem5 started Aug 31 2024 11:29:54
+gem5 executing on Archip-Lab0, pid 71208
+command line: ./build/NULL/gem5.opt configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --topology=Mesh_longrange --mesh-rows=4 --inj-vnet=0 --synthetic=uniform_random --sim-cycles=20 --injectionrate=0.00 --routing-algorithm=1 --hotspots 5 11 12 --hotspot-factor=100 --budget=12
+
+[(4, 14), (15, 6), (0, 8), (12, 10)]
+2.5 2.2734375 0.09062499999999996
+Exiting @ tick 20 because Network Tester completed simCycles
+Global frequency set at 2000000000 ticks per second
+m_nodes: 32
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.0.0.1
+gem5 compiled Aug 30 2024 19:15:48
+gem5 started Aug 31 2024 11:29:56
+gem5 executing on Archip-Lab0, pid 71261
+command line: ./build/NULL/gem5.opt configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --topology=Mesh_longrange --mesh-rows=4 --inj-vnet=0 --synthetic=uniform_random --sim-cycles=20 --injectionrate=0.00 --routing-algorithm=1 --hotspots 5 11 12 --hotspot-factor=100 --budget=12 --best-effort
+
+0.029002426572104487 0 10
+0.029002426572104487 3 9
+0.029002426572104487 5 15
+0.029002426572104487 6 12
+[(0, 10), (3, 9), (5, 15), (6, 12)]
+2.5 2.171875 0.13124999999999998
+Exiting @ tick 20 because Network Tester completed simCycles
+Global frequency set at 2000000000 ticks per second
+m_nodes: 32
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.0.0.1
+gem5 compiled Aug 30 2024 19:15:48
+gem5 started Aug 31 2024 11:29:59
+gem5 executing on Archip-Lab0, pid 71313
+command line: ./build/NULL/gem5.opt configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --topology=Mesh_longrange --mesh-rows=4 --inj-vnet=0 --synthetic=transpose --sim-cycles=20 --injectionrate=0.00 --routing-algorithm=1 --hotspots 5 11 12 --hotspot-factor=100 --budget=12
+
+[(14, 3), (8, 1), (5, 0), (6, 9), (2, 10)]
+2.5 2.0 0.19999999999999996
+Exiting @ tick 20 because Network Tester completed simCycles
+Global frequency set at 2000000000 ticks per second
+m_nodes: 32
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.0.0.1
+gem5 compiled Aug 30 2024 19:15:48
+gem5 started Aug 31 2024 11:30:01
+gem5 executing on Archip-Lab0, pid 71318
+command line: ./build/NULL/gem5.opt configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --topology=Mesh_longrange --mesh-rows=4 --inj-vnet=0 --synthetic=transpose --sim-cycles=20 --injectionrate=0.00 --routing-algorithm=1 --hotspots 5 11 12 --hotspot-factor=100 --budget=12 --best-effort
+
+0.1473139127471974 3 12
+0.13258252147247765 2 8
+0.13258252147247765 7 13
+0.08838834764831843 1 4
+[(3, 12), (2, 8), (7, 13), (1, 4)]
+2.5 1.0 0.6
+Exiting @ tick 20 because Network Tester completed simCycles
+Global frequency set at 2000000000 ticks per second
+m_nodes: 32
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.0.0.1
+gem5 compiled Aug 30 2024 19:15:48
+gem5 started Aug 31 2024 11:30:03
+gem5 executing on Archip-Lab0, pid 71375
+command line: ./build/NULL/gem5.opt configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --topology=Mesh_longrange --mesh-rows=4 --inj-vnet=0 --synthetic=hotspot --sim-cycles=20 --injectionrate=0.00 --routing-algorithm=1 --hotspots 5 11 12 --hotspot-factor=100 --budget=12
+
+[(1, 7), (15, 3), (8, 0), (5, 14)]
+2.5000000000000004 2.30921052631579 0.07631578947368423
+Exiting @ tick 20 because Network Tester completed simCycles
+Global frequency set at 2000000000 ticks per second
+m_nodes: 32
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.0.0.1
+gem5 compiled Aug 30 2024 19:15:48
+gem5 started Aug 31 2024 11:30:05
+gem5 executing on Archip-Lab0, pid 71377
+command line: ./build/NULL/gem5.opt configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --topology=Mesh_longrange --mesh-rows=4 --inj-vnet=0 --synthetic=hotspot --sim-cycles=20 --injectionrate=0.00 --routing-algorithm=1 --hotspots 5 11 12 --hotspot-factor=100 --budget=12 --best-effort
+
+0.030238118932319466 9 12
+0.029075114357999483 5 15
+0.027912109783679508 0 10
+0.027912109783679504 3 6
+0.0260055728632268 4 11
+[(9, 12), (5, 15), (0, 10), (3, 6), (4, 11)]
+2.5000000000000004 2.174342105263158 0.13026315789473697
+Exiting @ tick 20 because Network Tester completed simCycles
+Global frequency set at 2000000000 ticks per second
+m_nodes: 32
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.0.0.1
+gem5 compiled Aug 30 2024 19:15:48
+gem5 started Aug 31 2024 11:30:07
+gem5 executing on Archip-Lab0, pid 71420
+command line: ./build/NULL/gem5.opt configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --topology=Mesh_longrange --mesh-rows=4 --inj-vnet=0 --synthetic=real_traffic --sim-cycles=20 --injectionrate=0.00 --routing-algorithm=1 --hotspots 5 11 12 --hotspot-factor=100 --budget=12 --traffic-matrix=real_traffic/mesh_4x4/Fpppp_mesh_4x4_traffic.txt
+
+[(4, 3), (15, 10), (0, 8), (2, 12)]
+2.4049447259229697 2.150790145373158 0.1056800091121729
+Exiting @ tick 20 because Network Tester completed simCycles
+Global frequency set at 2000000000 ticks per second
+m_nodes: 32
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.0.0.1
+gem5 compiled Aug 30 2024 19:15:48
+gem5 started Aug 31 2024 11:30:10
+gem5 executing on Archip-Lab0, pid 71434
+command line: ./build/NULL/gem5.opt configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --topology=Mesh_longrange --mesh-rows=4 --inj-vnet=0 --synthetic=real_traffic --sim-cycles=20 --injectionrate=0.00 --routing-algorithm=1 --hotspots 5 11 12 --hotspot-factor=100 --budget=12 --best-effort --traffic-matrix=real_traffic/mesh_4x4/Fpppp_mesh_4x4_traffic.txt
+
+0.03133568372372168 0 10
+0.03071818190015924 9 12
+0.028522953532868555 3 6
+0.027789458965548783 1 11
+0.0258696157905885 2 13
+[(0, 10), (9, 12), (3, 6), (1, 11), (2, 13)]
+2.4049447259229697 2.072127043314661 0.13838891140443166
+Exiting @ tick 20 because Network Tester completed simCycles
+Global frequency set at 2000000000 ticks per second
+m_nodes: 32
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.0.0.1
+gem5 compiled Aug 30 2024 19:15:48
+gem5 started Aug 31 2024 11:30:12
+gem5 executing on Archip-Lab0, pid 71474
+command line: ./build/NULL/gem5.opt configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --topology=Mesh_longrange --mesh-rows=4 --inj-vnet=0 --synthetic=real_traffic --sim-cycles=20 --injectionrate=0.00 --routing-algorithm=1 --hotspots 5 11 12 --hotspot-factor=100 --budget=12 --traffic-matrix=real_traffic/mesh_4x4/H264-720p_dec_mesh_4x4_traffic.txt
+
+[(6, 8), (12, 14), (11, 0)]
+1.8952057534483153 1.7424161733788466 0.08061899336864564
+Exiting @ tick 20 because Network Tester completed simCycles
+Global frequency set at 2000000000 ticks per second
+m_nodes: 32
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.0.0.1
+gem5 compiled Aug 30 2024 19:15:48
+gem5 started Aug 31 2024 11:30:14
+gem5 executing on Archip-Lab0, pid 71526
+command line: ./build/NULL/gem5.opt configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --topology=Mesh_longrange --mesh-rows=4 --inj-vnet=0 --synthetic=real_traffic --sim-cycles=20 --injectionrate=0.00 --routing-algorithm=1 --hotspots 5 11 12 --hotspot-factor=100 --budget=12 --best-effort --traffic-matrix=real_traffic/mesh_4x4/H264-720p_dec_mesh_4x4_traffic.txt
+
+0.06369719308373148 0 5
+0.038320646463580015 7 10
+0.03209108969038235 3 6
+0.018816272058586322 11 14
+0.012677930590997168 9 12
+0.006591676552020524 1 4
+0.006005007619226985 8 13
+[(0, 5), (7, 10), (3, 6), (11, 14), (9, 12), (1, 4), (8, 13)]
+1.8952057534483153 1.6431931567659583 0.13297373977670846
+Exiting @ tick 20 because Network Tester completed simCycles
+Global frequency set at 2000000000 ticks per second
+m_nodes: 32
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.0.0.1
+gem5 compiled Aug 30 2024 19:15:48
+gem5 started Aug 31 2024 11:30:16
+gem5 executing on Archip-Lab0, pid 71584
+command line: ./build/NULL/gem5.opt configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --topology=Mesh_longrange --mesh-rows=4 --inj-vnet=0 --synthetic=real_traffic --sim-cycles=20 --injectionrate=0.00 --routing-algorithm=1 --hotspots 5 11 12 --hotspot-factor=100 --budget=12 --traffic-matrix=real_traffic/mesh_4x4/H264-1080p_dec_mesh_4x4_traffic.txt
+
+[(2, 0), (4, 3), (12, 1), (15, 9)]
+1.8925597288871585 1.7765599474128504 0.06129253397065415
+Exiting @ tick 20 because Network Tester completed simCycles
+Global frequency set at 2000000000 ticks per second
+m_nodes: 32
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.0.0.1
+gem5 compiled Aug 30 2024 19:15:48
+gem5 started Aug 31 2024 11:30:18
+gem5 executing on Archip-Lab0, pid 71647
+command line: ./build/NULL/gem5.opt configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --topology=Mesh_longrange --mesh-rows=4 --inj-vnet=0 --synthetic=real_traffic --sim-cycles=20 --injectionrate=0.00 --routing-algorithm=1 --hotspots 5 11 12 --hotspot-factor=100 --budget=12 --best-effort --traffic-matrix=real_traffic/mesh_4x4/H264-1080p_dec_mesh_4x4_traffic.txt
+
+0.06308793295803619 0 5
+0.03835161337255575 7 10
+0.032793343520105565 3 6
+0.018442828853076545 11 14
+0.01265751282379998 9 12
+0.006338102440034995 8 13
+0.006286512364729767 1 4
+[(0, 5), (7, 10), (3, 6), (11, 14), (9, 12), (8, 13), (1, 4)]
+1.8925597288871585 1.640889329073258 0.13297884128702497
+Exiting @ tick 20 because Network Tester completed simCycles
+Global frequency set at 2000000000 ticks per second
+m_nodes: 32
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.0.0.1
+gem5 compiled Aug 30 2024 19:15:48
+gem5 started Aug 31 2024 11:30:21
+gem5 executing on Archip-Lab0, pid 71690
+command line: ./build/NULL/gem5.opt configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --topology=Mesh_longrange --mesh-rows=4 --inj-vnet=0 --synthetic=real_traffic --sim-cycles=20 --injectionrate=0.00 --routing-algorithm=1 --hotspots 5 11 12 --hotspot-factor=100 --budget=12 --traffic-matrix=real_traffic/mesh_4x4/Robot_mesh_4x4_traffic.txt
+
+[(4, 7), (3, 1), (14, 9), (15, 2)]
+1.6536609083830418 1.6536609083830418 0.0
+Exiting @ tick 20 because Network Tester completed simCycles
+Global frequency set at 2000000000 ticks per second
+m_nodes: 32
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.0.0.1
+gem5 compiled Aug 30 2024 19:15:48
+gem5 started Aug 31 2024 11:30:23
+gem5 executing on Archip-Lab0, pid 71731
+command line: ./build/NULL/gem5.opt configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --topology=Mesh_longrange --mesh-rows=4 --inj-vnet=0 --synthetic=real_traffic --sim-cycles=20 --injectionrate=0.00 --routing-algorithm=1 --hotspots 5 11 12 --hotspot-factor=100 --budget=12 --best-effort --traffic-matrix=real_traffic/mesh_4x4/Robot_mesh_4x4_traffic.txt
+
+0.06959130767726304 0 5
+0.03031493329813972 8 13
+0.029166064765716662 4 6
+0.014438576154857077 2 10
+0.014315259862660884 1 9
+[(0, 5), (8, 13), (4, 6), (2, 10), (1, 9)]
+1.6536609083830418 1.3965323458634433 0.15549050063172876
+Exiting @ tick 20 because Network Tester completed simCycles
+Global frequency set at 2000000000 ticks per second
+m_nodes: 32
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.0.0.1
+gem5 compiled Aug 30 2024 19:15:48
+gem5 started Aug 31 2024 11:30:25
+gem5 executing on Archip-Lab0, pid 71755
+command line: ./build/NULL/gem5.opt configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --topology=Mesh_longrange --mesh-rows=4 --inj-vnet=0 --synthetic=real_traffic --sim-cycles=20 --injectionrate=0.00 --routing-algorithm=1 --hotspots 5 11 12 --hotspot-factor=100 --budget=12 --traffic-matrix=real_traffic/mesh_4x4/RS-32_28_8_dec_mesh_4x4_traffic.txt
+
+[(7, 15), (2, 12), (14, 1), (8, 6)]
+2.1560758082497182 2.089186176142695 0.031023784901758056
+Exiting @ tick 20 because Network Tester completed simCycles
+Global frequency set at 2000000000 ticks per second
+m_nodes: 32
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.0.0.1
+gem5 compiled Aug 30 2024 19:15:48
+gem5 started Aug 31 2024 11:30:27
+gem5 executing on Archip-Lab0, pid 71813
+command line: ./build/NULL/gem5.opt configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --topology=Mesh_longrange --mesh-rows=4 --inj-vnet=0 --synthetic=real_traffic --sim-cycles=20 --injectionrate=0.00 --routing-algorithm=1 --hotspots 5 11 12 --hotspot-factor=100 --budget=12 --best-effort --traffic-matrix=real_traffic/mesh_4x4/RS-32_28_8_dec_mesh_4x4_traffic.txt
+
+0.13243471487105907 0 5
+0.026276729141083144 3 6
+0.026276729141083144 9 12
+0.021021383312866515 10 15
+0.007883018742324943 2 8
+0.007883018742324943 7 13
+[(0, 5), (3, 6), (9, 12), (10, 15), (2, 8), (7, 13)]
+2.1560758082497182 1.820141211445557 0.1558083419510512
+Exiting @ tick 20 because Network Tester completed simCycles
+Global frequency set at 2000000000 ticks per second
+m_nodes: 32
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.0.0.1
+gem5 compiled Aug 30 2024 19:15:48
+gem5 started Aug 31 2024 11:30:29
+gem5 executing on Archip-Lab0, pid 71822
+command line: ./build/NULL/gem5.opt configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --topology=Mesh_longrange --mesh-rows=4 --inj-vnet=0 --synthetic=real_traffic --sim-cycles=20 --injectionrate=0.00 --routing-algorithm=1 --hotspots 5 11 12 --hotspot-factor=100 --budget=12 --traffic-matrix=real_traffic/mesh_4x4/RS-32_28_8_enc_mesh_4x4_traffic.txt
+
+[(11, 8), (14, 12), (15, 0), (1, 7)]
+1.896551724137931 1.793103448275862 0.054545454545454564
+Exiting @ tick 20 because Network Tester completed simCycles
+Global frequency set at 2000000000 ticks per second
+m_nodes: 32
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.0.0.1
+gem5 compiled Aug 30 2024 19:15:48
+gem5 started Aug 31 2024 11:30:32
+gem5 executing on Archip-Lab0, pid 71868
+command line: ./build/NULL/gem5.opt configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --topology=Mesh_longrange --mesh-rows=4 --inj-vnet=0 --synthetic=real_traffic --sim-cycles=20 --injectionrate=0.00 --routing-algorithm=1 --hotspots 5 11 12 --hotspot-factor=100 --budget=12 --best-effort --traffic-matrix=real_traffic/mesh_4x4/RS-32_28_8_enc_mesh_4x4_traffic.txt
+
+0.05172413793103448 0 8
+0.05172413793103448 4 12
+0.024382992454708534 1 6
+0.024382992454708534 5 10
+0.024382992454708534 9 14
+0.017241379310344827 13 15
+[(0, 8), (4, 12), (1, 6), (5, 10), (9, 14), (13, 15)]
+1.896551724137931 1.5517241379310343 0.181818181818182
+Exiting @ tick 20 because Network Tester completed simCycles
+Global frequency set at 2000000000 ticks per second
+m_nodes: 32
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.0.0.1
+gem5 compiled Aug 30 2024 19:15:48
+gem5 started Aug 31 2024 11:30:34
+gem5 executing on Archip-Lab0, pid 71895
+command line: ./build/NULL/gem5.opt configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --topology=Mesh_longrange --mesh-rows=4 --inj-vnet=0 --synthetic=real_traffic --sim-cycles=20 --injectionrate=0.00 --routing-algorithm=1 --hotspots 5 11 12 --hotspot-factor=100 --budget=12 --traffic-matrix=real_traffic/mesh_4x4/Sparse_mesh_4x4_traffic.txt
+
+[(12, 0), (6, 13), (9, 2), (7, 5)]
+1.3838073740334285 1.3838073740334285 0.0
+Exiting @ tick 20 because Network Tester completed simCycles
+Global frequency set at 2000000000 ticks per second
+m_nodes: 32
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.0.0.1
+gem5 compiled Aug 30 2024 19:15:48
+gem5 started Aug 31 2024 11:30:36
+gem5 executing on Archip-Lab0, pid 71939
+command line: ./build/NULL/gem5.opt configs/example/garnet_synth_traffic.py --network=garnet --num-cpus=16 --num-dirs=16 --topology=Mesh_longrange --mesh-rows=4 --inj-vnet=0 --synthetic=real_traffic --sim-cycles=20 --injectionrate=0.00 --routing-algorithm=1 --hotspots 5 11 12 --hotspot-factor=100 --budget=12 --best-effort --traffic-matrix=real_traffic/mesh_4x4/Sparse_mesh_4x4_traffic.txt
+
+0.037031238873334316 1 9
+0.032189103112184286 10 12
+0.016667280816215022 5 14
+0.01613954088014416 2 4
+0.012962600839381529 8 11
+[(1, 9), (10, 12), (5, 14), (2, 4), (8, 11)]
+1.3838073740334285 1.1255217876362469 0.1866485113779588
+Exiting @ tick 20 because Network Tester completed simCycles
