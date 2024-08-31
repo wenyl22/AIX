@@ -600,7 +600,9 @@ RoutingUnit::outportsComputeHiRy(RouteInfo route, int inport, int invc) {
 /*    for (auto u : candidates)
         std::cerr << u.first << ' ' << u.second << std::endl;*/
     return candidates;
-RoutingUnit::outportsComputeAny(RouteInfo route,
+}
+
+std::vector <std::pair <int, int> > RoutingUnit::outportsComputeAny(RouteInfo route,
                                 int inport,
                                 PortDirection inport_dirn, int invc)
 {   

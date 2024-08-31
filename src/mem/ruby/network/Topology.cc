@@ -469,14 +469,6 @@ Topology::extend_ordered_shortest_path(std::vector <Matrix> &ordered_dist, const
             }
         }
     }
-    for (int w = 1; w <= max_weight; w++) {
-        std::cerr << "weight: " << w << std::endl;
-        for (int i = 256; i < nodes; i++) {
-            for (int j = 256; j < nodes; j++)
-                std::cerr << ordered_dist[0][w][i][j] << " ";
-            std::cerr << std::endl;
-        }
-    }
 }
 
 Matrix

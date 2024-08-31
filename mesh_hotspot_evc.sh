@@ -6,7 +6,7 @@ wormholeEnable=(1 1 1 1 1)
 VcsPerVnet=(2 2 2 2 2)
 AdaptiveRouting=(0 1 1 1 1)
 BufferPerCtrlVc=(2 2 2 2 2)
-RoutingAlgorithm=(1 7 7 5 5)
+RoutingAlgorithm=(1 8 8 5 5)
 CongestionSensor=(0 0 1 0 1)
 EscapeVCEnable=(0 1 1 0 0)
 EscapeRoutingAlgorithm=(-1 1 1 -1 -1)
@@ -31,7 +31,7 @@ statsFile="mesh_hotspot_evc_16.txt"
 # Clear the file to store fresh results
 #echo "" > $statsFile
 
-for experiment in {3..4}; do
+for experiment in {0..4}; do
     for rate in "${injectionRates[@]}"; do
         topology=${Topology[$experiment]}
         routing=${RoutingAlgorithm[$experiment]}
