@@ -1,5 +1,5 @@
 source expcode/bound_mesh.sh
-source expcode/bound_mesh.sh
+source expcode/bound_cube.sh
 source expcode/mesh_expected_hopcount.sh
 source expcode/cube_expected_hopcount.sh
 source expcode/mesh_synth.sh

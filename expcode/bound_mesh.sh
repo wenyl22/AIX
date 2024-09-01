@@ -5,7 +5,7 @@ command_line="./build/NULL/gem5.opt configs/example/garnet_synth_traffic.py \
         --inj-vnet=0 --synthetic=uniform_random \
         --sim-cycles=200000 --injectionrate=\$rate \
         --routing-algorithm=1"
-statsFile="output/bound_cube.txt"
+statsFile="output/bound_mesh.txt"
 for rate in "${injectionRates[@]}"; do
     eval $command_line
     echo Running experiment with the following parameters: injection rate = $rate>> $statsFile
