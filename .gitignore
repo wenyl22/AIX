@@ -33,6 +33,6 @@ configs/dram/lowp_sweep.cfg
 .pyenv
 .vscode
 config
-exp*/
+tempts/
 real_traffic/*/*.rtp
 real_traffic/*/*.stp

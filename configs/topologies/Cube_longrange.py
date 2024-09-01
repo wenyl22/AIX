@@ -183,6 +183,45 @@ class Cube_longrange(SimpleTopology):
         print(Links)
         self.caculateBenifit(options, Links, To, num_w, num_h, num_d)
         return Links
+    
+    def getWeight(self, i_x, j_x, i_y, j_y, i_z, j_z):
+        res = []
+        dirn = ''
+        if i_x < j_x:
+            dirn += '+'
+        if i_x > j_x:
+            dirn += '-'
+        if i_x == j_x:
+            dirn += '0'
+        if i_y < j_y:
+            dirn += '+'
+        if i_y > j_y:
+            dirn += '-'
+        if i_y == j_y:
+            dirn += '0'
+        if i_z < j_z:
+            dirn += '+'
+        if i_z > j_z:
+            dirn += '-'
+        if i_z == j_z:
+            dirn += '0'
+        P = [[], ["++-", "++0", "+++", "+0-", "+00", "+0+"],
+             ["+--", "+-0", "+-+", "00-"],
+        ["---", "--0", "--+", "0--", "0-0", "0-+"],
+        ["-+-", "-+0", "-++", "0+-", "0+0", "0++", "-0-", "-00", "-0+", "00+"],
+
+        ["+-+", "+0+", "+++", "+-0", "+00", "++0"],
+        ["+--", "+0-", "++-", "0-0"],
+        ["---", "-0-", "-+-", "0--", "00-", "0+-"],
+        ["--+", "-0+", "-++", "0-+", "00+", "0++", "--0", "-00", "-+0", "0+0"]]
+
+        for i in range(1, 9):
+            if dirn in P[i]:
+                res.append(i)
+        
+        assert(len(res) == 2)
+        return res
+
     def makeTopology(self, options, network, IntLink, ExtLink, Router):
         nodes = self.nodes
 
@@ -265,6 +304,16 @@ class Cube_longrange(SimpleTopology):
         # Create the mesh links.
         int_links = []
 
+        # P_1 = {++-, ++0, +++, +0-, +00, +0+}
+        # P_3 = {+--, +-0, +-+, 00-}
+        # P_5 = {---, --0, --+, 0--, 0-0, 0-+}
+        # P_7 = {-+-, -+0, -++, 0+-, 0+0, 0++, -0-, -00, -0+, 00+}
+
+        # P_2 = {+-+, +0+, +++, +-0, +00, ++0}
+        # P_4 = {+--, +0-, ++-, 0-0}
+        # P_6 = {---, -0-, -+-, 0--, 00-, 0+-}
+        # P_8 = {--+, -0+, -++, 0-+, 00+, 0++, --0, -00, -+0, 0+0}
+
         # Long range links
         for k, (i, j) in enumerate(Links):
             i_x = i % num_w
@@ -314,6 +363,7 @@ class Cube_longrange(SimpleTopology):
                     dst_inport=rev_dirn,
                     latency=link_latency,
                     weight=4,
+                    per_vc_weight = self.getWeight(i_x, j_x, i_y, j_y, i_z, j_z),
                 )
             )
 
@@ -326,6 +376,7 @@ class Cube_longrange(SimpleTopology):
                     dst_inport=dirn,
                     latency=link_latency,
                     weight=4,
+                    per_vc_weight = self.getWeight(j_x, i_x, j_y, i_y, j_z, i_z),
                 )
             )
             link_count += 2
@@ -346,6 +397,8 @@ class Cube_longrange(SimpleTopology):
                                 dst_inport="West",
                                 latency=link_latency,
                                 weight=1,
+                                per_vc_weight = [1, 2],
+                                # +00
                             )
                         )
                         link_count += 1
@@ -365,6 +418,8 @@ class Cube_longrange(SimpleTopology):
                                 dst_inport="East",
                                 latency=link_latency,
                                 weight=1,
+                                per_vc_weight = [7, 8],
+                                # -00
                             )
                         )
                         link_count += 1
@@ -385,6 +440,8 @@ class Cube_longrange(SimpleTopology):
                                 dst_inport="South",
                                 latency=link_latency,
                                 weight=2,
+                                per_vc_weight = [7, 8],
+                                # 0+0
                             )
                         )
                         link_count += 1
@@ -405,6 +462,8 @@ class Cube_longrange(SimpleTopology):
                                 dst_inport="North",
                                 latency=link_latency,
                                 weight=2,
+                                per_vc_weight = [5, 4],
+                                # 0-0
                             )
                         )
                         link_count += 1
@@ -424,6 +483,8 @@ class Cube_longrange(SimpleTopology):
                                 dst_inport="Down",
                                 latency=link_latency,
                                 weight=3,
+                                per_vc_weight = [7, 8],
+                                # 00+
                             )
                         )
                         link_count += 1 
@@ -443,6 +504,8 @@ class Cube_longrange(SimpleTopology):
                                 dst_inport="Up",
                                 latency=link_latency,
                                 weight=3,
+                                per_vc_weight = [3, 6],
+                                # 00-
                             )
                         )
                         link_count += 1

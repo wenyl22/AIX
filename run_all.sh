@@ -1,0 +1,12 @@
+source expcode/bound_mesh.sh
+source expcode/bound_mesh.sh
+source expcode/mesh_expected_hopcount.sh
+source expcode/cube_expected_hopcount.sh
+source expcode/mesh_synth.sh
+source expcode/mesh_hotspot.sh
+source expcode/mesh_real.sh
+source expcode/cube_synth.sh
+source expcode/mesh_synth_evc.sh
+source expcode/mesh_hotspot_evc.sh
+source expcode/mesh_real_evc.sh
+source expcode/cube_synth_evc.sh

@@ -1,0 +1,549 @@
+Running experiment with the following parameters: injection rate = 0.01, synthetic type = hotspot, topology = Mesh_XY, routing algorithm = 1, adaptive = 0, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 0, experiment = 0
+packets_injected = 15755                       (Unspecified)
+packets_received = 15753                       (Unspecified)
+average_packet_queueing_latency = 2.000254                       (Unspecified)
+average_packet_network_latency = 8.013775                       (Unspecified)
+average_packet_latency = 10.014029                       (Unspecified)
+average_hops = 2.493620                       (Unspecified)
+reception_rate = 0.00984563
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.04, synthetic type = hotspot, topology = Mesh_XY, routing algorithm = 1, adaptive = 0, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 0, experiment = 0
+packets_injected = 63661                       (Unspecified)
+packets_received = 63658                       (Unspecified)
+average_packet_queueing_latency = 2.001634                       (Unspecified)
+average_packet_network_latency = 8.171133                       (Unspecified)
+average_packet_latency = 10.172767                       (Unspecified)
+average_hops = 2.505812                       (Unspecified)
+reception_rate = 0.0397863
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.07, synthetic type = hotspot, topology = Mesh_XY, routing algorithm = 1, adaptive = 0, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 0, experiment = 0
+packets_injected = 111515                       (Unspecified)
+packets_received = 111510                       (Unspecified)
+average_packet_queueing_latency = 2.005452                       (Unspecified)
+average_packet_network_latency = 8.403506                       (Unspecified)
+average_packet_latency = 10.408959                       (Unspecified)
+average_hops = 2.501480                       (Unspecified)
+reception_rate = 0.0696937
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.10, synthetic type = hotspot, topology = Mesh_XY, routing algorithm = 1, adaptive = 0, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 0, experiment = 0
+packets_injected = 159534                       (Unspecified)
+packets_received = 159523                       (Unspecified)
+average_packet_queueing_latency = 2.011547                       (Unspecified)
+average_packet_network_latency = 8.809238                       (Unspecified)
+average_packet_latency = 10.820784                       (Unspecified)
+average_hops = 2.496574                       (Unspecified)
+reception_rate = 0.0997019
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.13, synthetic type = hotspot, topology = Mesh_XY, routing algorithm = 1, adaptive = 0, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 0, experiment = 0
+packets_injected = 207433                       (Unspecified)
+packets_received = 207421                       (Unspecified)
+average_packet_queueing_latency = 2.023339                       (Unspecified)
+average_packet_network_latency = 9.614113                       (Unspecified)
+average_packet_latency = 11.637452                       (Unspecified)
+average_hops = 2.496980                       (Unspecified)
+reception_rate = 0.129638
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.16, synthetic type = hotspot, topology = Mesh_XY, routing algorithm = 1, adaptive = 0, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 0, experiment = 0
+packets_injected = 255471                       (Unspecified)
+packets_received = 255452                       (Unspecified)
+average_packet_queueing_latency = 2.166090                       (Unspecified)
+average_packet_network_latency = 11.933424                       (Unspecified)
+average_packet_latency = 14.099514                       (Unspecified)
+average_hops = 2.503136                       (Unspecified)
+reception_rate = 0.159658
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.19, synthetic type = hotspot, topology = Mesh_XY, routing algorithm = 1, adaptive = 0, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 0, experiment = 0
+packets_injected = 300816                       (Unspecified)
+packets_received = 300760                       (Unspecified)
+average_packet_queueing_latency = 844.025339                       (Unspecified)
+average_packet_network_latency = 32.436301                       (Unspecified)
+average_packet_latency = 876.461641                       (Unspecified)
+average_hops = 2.495102                       (Unspecified)
+reception_rate = 0.187975
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.22, synthetic type = hotspot, topology = Mesh_XY, routing algorithm = 1, adaptive = 0, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 0, experiment = 0
+packets_injected = 303784                       (Unspecified)
+packets_received = 303722                       (Unspecified)
+average_packet_queueing_latency = 10772.645314                       (Unspecified)
+average_packet_network_latency = 42.732963                       (Unspecified)
+average_packet_latency = 10815.378277                       (Unspecified)
+average_hops = 2.423101                       (Unspecified)
+reception_rate = 0.189826
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.01, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 0, experiment = 1
+packets_injected = 15755                       (Unspecified)
+packets_received = 15753                       (Unspecified)
+average_packet_queueing_latency = 2.000254                       (Unspecified)
+average_packet_network_latency = 7.628833                       (Unspecified)
+average_packet_latency = 9.629087                       (Unspecified)
+average_hops = 2.294484                       (Unspecified)
+reception_rate = 0.00984563
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.04, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 0, experiment = 1
+packets_injected = 63661                       (Unspecified)
+packets_received = 63658                       (Unspecified)
+average_packet_queueing_latency = 2.001649                       (Unspecified)
+average_packet_network_latency = 7.763470                       (Unspecified)
+average_packet_latency = 9.765120                       (Unspecified)
+average_hops = 2.299805                       (Unspecified)
+reception_rate = 0.0397863
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.07, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 0, experiment = 1
+packets_injected = 111515                       (Unspecified)
+packets_received = 111511                       (Unspecified)
+average_packet_queueing_latency = 2.005551                       (Unspecified)
+average_packet_network_latency = 7.896925                       (Unspecified)
+average_packet_latency = 9.902476                       (Unspecified)
+average_hops = 2.294509                       (Unspecified)
+reception_rate = 0.0696944
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.10, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 0, experiment = 1
+packets_injected = 159534                       (Unspecified)
+packets_received = 159523                       (Unspecified)
+average_packet_queueing_latency = 2.011039                       (Unspecified)
+average_packet_network_latency = 8.075588                       (Unspecified)
+average_packet_latency = 10.086627                       (Unspecified)
+average_hops = 2.294070                       (Unspecified)
+reception_rate = 0.0997019
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.13, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 0, experiment = 1
+packets_injected = 207433                       (Unspecified)
+packets_received = 207424                       (Unspecified)
+average_packet_queueing_latency = 2.019752                       (Unspecified)
+average_packet_network_latency = 8.301985                       (Unspecified)
+average_packet_latency = 10.321737                       (Unspecified)
+average_hops = 2.293818                       (Unspecified)
+reception_rate = 0.12964
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.16, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 0, experiment = 1
+packets_injected = 255471                       (Unspecified)
+packets_received = 255458                       (Unspecified)
+average_packet_queueing_latency = 2.033168                       (Unspecified)
+average_packet_network_latency = 8.654581                       (Unspecified)
+average_packet_latency = 10.687749                       (Unspecified)
+average_hops = 2.297724                       (Unspecified)
+reception_rate = 0.159661
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.19, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 0, experiment = 1
+packets_injected = 303310                       (Unspecified)
+packets_received = 303302                       (Unspecified)
+average_packet_queueing_latency = 2.051764                       (Unspecified)
+average_packet_network_latency = 9.222682                       (Unspecified)
+average_packet_latency = 11.274446                       (Unspecified)
+average_hops = 2.295481                       (Unspecified)
+reception_rate = 0.189564
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.22, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 0, experiment = 1
+packets_injected = 351518                       (Unspecified)
+packets_received = 351498                       (Unspecified)
+average_packet_queueing_latency = 2.098385                       (Unspecified)
+average_packet_network_latency = 10.343197                       (Unspecified)
+average_packet_latency = 12.441581                       (Unspecified)
+average_hops = 2.290642                       (Unspecified)
+reception_rate = 0.219686
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.25, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 0, experiment = 1
+packets_injected = 399446                       (Unspecified)
+packets_received = 399425                       (Unspecified)
+average_packet_queueing_latency = 2.251552                       (Unspecified)
+average_packet_network_latency = 12.482005                       (Unspecified)
+average_packet_latency = 14.733557                       (Unspecified)
+average_hops = 2.282609                       (Unspecified)
+reception_rate = 0.249641
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.28, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 0, experiment = 1
+packets_injected = 447735                       (Unspecified)
+packets_received = 447698                       (Unspecified)
+average_packet_queueing_latency = 2.645288                       (Unspecified)
+average_packet_network_latency = 14.592281                       (Unspecified)
+average_packet_latency = 17.237569                       (Unspecified)
+average_hops = 2.268757                       (Unspecified)
+reception_rate = 0.279811
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.31, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 0, experiment = 1
+packets_injected = 495653                       (Unspecified)
+packets_received = 495609                       (Unspecified)
+average_packet_queueing_latency = 3.399141                       (Unspecified)
+average_packet_network_latency = 15.961724                       (Unspecified)
+average_packet_latency = 19.360865                       (Unspecified)
+average_hops = 2.250968                       (Unspecified)
+reception_rate = 0.309756
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.34, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 0, experiment = 1
+packets_injected = 543819                       (Unspecified)
+packets_received = 543754                       (Unspecified)
+average_packet_queueing_latency = 5.738295                       (Unspecified)
+average_packet_network_latency = 17.801418                       (Unspecified)
+average_packet_latency = 23.539713                       (Unspecified)
+average_hops = 2.236583                       (Unspecified)
+reception_rate = 0.339846
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.37, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 0, experiment = 1
+packets_injected = 590269                       (Unspecified)
+packets_received = 590201                       (Unspecified)
+average_packet_queueing_latency = 242.867679                       (Unspecified)
+average_packet_network_latency = 22.679411                       (Unspecified)
+average_packet_latency = 265.547090                       (Unspecified)
+average_hops = 2.218834                       (Unspecified)
+reception_rate = 0.368876
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.40, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 0, experiment = 1
+packets_injected = 601115                       (Unspecified)
+packets_received = 601035                       (Unspecified)
+average_packet_queueing_latency = 5370.472673                       (Unspecified)
+average_packet_network_latency = 25.899146                       (Unspecified)
+average_packet_latency = 5396.371819                       (Unspecified)
+average_hops = 2.211700                       (Unspecified)
+reception_rate = 0.375647
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.01, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 1, experiment = 2
+packets_injected = 15755                       (Unspecified)
+packets_received = 15753                       (Unspecified)
+average_packet_queueing_latency = 2.000254                       (Unspecified)
+average_packet_network_latency = 7.628198                       (Unspecified)
+average_packet_latency = 9.628452                       (Unspecified)
+average_hops = 2.294103                       (Unspecified)
+reception_rate = 0.00984563
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.04, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 1, experiment = 2
+packets_injected = 63661                       (Unspecified)
+packets_received = 63658                       (Unspecified)
+average_packet_queueing_latency = 2.001665                       (Unspecified)
+average_packet_network_latency = 7.764130                       (Unspecified)
+average_packet_latency = 9.765795                       (Unspecified)
+average_hops = 2.299570                       (Unspecified)
+reception_rate = 0.0397863
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.07, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 1, experiment = 2
+packets_injected = 111515                       (Unspecified)
+packets_received = 111511                       (Unspecified)
+average_packet_queueing_latency = 2.005542                       (Unspecified)
+average_packet_network_latency = 7.899857                       (Unspecified)
+average_packet_latency = 9.905399                       (Unspecified)
+average_hops = 2.294016                       (Unspecified)
+reception_rate = 0.0696944
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.10, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 1, experiment = 2
+packets_injected = 159534                       (Unspecified)
+packets_received = 159523                       (Unspecified)
+average_packet_queueing_latency = 2.011121                       (Unspecified)
+average_packet_network_latency = 8.078634                       (Unspecified)
+average_packet_latency = 10.089755                       (Unspecified)
+average_hops = 2.292685                       (Unspecified)
+reception_rate = 0.0997019
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.13, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 1, experiment = 2
+packets_injected = 207433                       (Unspecified)
+packets_received = 207424                       (Unspecified)
+average_packet_queueing_latency = 2.019814                       (Unspecified)
+average_packet_network_latency = 8.302438                       (Unspecified)
+average_packet_latency = 10.322253                       (Unspecified)
+average_hops = 2.291162                       (Unspecified)
+reception_rate = 0.12964
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.16, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 1, experiment = 2
+packets_injected = 255471                       (Unspecified)
+packets_received = 255458                       (Unspecified)
+average_packet_queueing_latency = 2.033735                       (Unspecified)
+average_packet_network_latency = 8.660696                       (Unspecified)
+average_packet_latency = 10.694431                       (Unspecified)
+average_hops = 2.295516                       (Unspecified)
+reception_rate = 0.159661
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.19, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 1, experiment = 2
+packets_injected = 303310                       (Unspecified)
+packets_received = 303299                       (Unspecified)
+average_packet_queueing_latency = 2.052021                       (Unspecified)
+average_packet_network_latency = 9.209051                       (Unspecified)
+average_packet_latency = 11.261072                       (Unspecified)
+average_hops = 2.292794                       (Unspecified)
+reception_rate = 0.189562
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.22, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 1, experiment = 2
+packets_injected = 351517                       (Unspecified)
+packets_received = 351498                       (Unspecified)
+average_packet_queueing_latency = 2.102681                       (Unspecified)
+average_packet_network_latency = 10.387109                       (Unspecified)
+average_packet_latency = 12.489789                       (Unspecified)
+average_hops = 2.286915                       (Unspecified)
+reception_rate = 0.219686
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.25, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 1, experiment = 2
+packets_injected = 399445                       (Unspecified)
+packets_received = 399416                       (Unspecified)
+average_packet_queueing_latency = 2.259514                       (Unspecified)
+average_packet_network_latency = 12.403071                       (Unspecified)
+average_packet_latency = 14.662585                       (Unspecified)
+average_hops = 2.278068                       (Unspecified)
+reception_rate = 0.249635
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.28, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 1, experiment = 2
+packets_injected = 447735                       (Unspecified)
+packets_received = 447703                       (Unspecified)
+average_packet_queueing_latency = 2.673306                       (Unspecified)
+average_packet_network_latency = 14.554486                       (Unspecified)
+average_packet_latency = 17.227792                       (Unspecified)
+average_hops = 2.260219                       (Unspecified)
+reception_rate = 0.279814
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.31, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 1, experiment = 2
+packets_injected = 495649                       (Unspecified)
+packets_received = 495601                       (Unspecified)
+average_packet_queueing_latency = 3.627668                       (Unspecified)
+average_packet_network_latency = 16.033872                       (Unspecified)
+average_packet_latency = 19.661540                       (Unspecified)
+average_hops = 2.240451                       (Unspecified)
+reception_rate = 0.309751
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.34, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 1, experiment = 2
+packets_injected = 543804                       (Unspecified)
+packets_received = 543739                       (Unspecified)
+average_packet_queueing_latency = 9.364548                       (Unspecified)
+average_packet_network_latency = 18.042695                       (Unspecified)
+average_packet_latency = 27.407243                       (Unspecified)
+average_hops = 2.218301                       (Unspecified)
+reception_rate = 0.339837
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.37, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 8, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = 1, matrix = None, sensor = 1, experiment = 2
+packets_injected = 581433                       (Unspecified)
+packets_received = 581361                       (Unspecified)
+average_packet_queueing_latency = 1551.452605                       (Unspecified)
+average_packet_network_latency = 21.568755                       (Unspecified)
+average_packet_latency = 1573.021360                       (Unspecified)
+average_hops = 2.182711                       (Unspecified)
+reception_rate = 0.363351
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.01, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 0, experiment = 3
+packets_injected = 15755                       (Unspecified)
+packets_received = 15753                       (Unspecified)
+average_packet_queueing_latency = 2.000254                       (Unspecified)
+average_packet_network_latency = 7.370660                       (Unspecified)
+average_packet_latency = 9.370913                       (Unspecified)
+average_hops = 2.172983                       (Unspecified)
+reception_rate = 0.00984563
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.04, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 0, experiment = 3
+packets_injected = 63661                       (Unspecified)
+packets_received = 63658                       (Unspecified)
+average_packet_queueing_latency = 2.001634                       (Unspecified)
+average_packet_network_latency = 7.453219                       (Unspecified)
+average_packet_latency = 9.454852                       (Unspecified)
+average_hops = 2.176804                       (Unspecified)
+reception_rate = 0.0397863
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.07, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 0, experiment = 3
+packets_injected = 111515                       (Unspecified)
+packets_received = 111512                       (Unspecified)
+average_packet_queueing_latency = 2.005327                       (Unspecified)
+average_packet_network_latency = 7.535422                       (Unspecified)
+average_packet_latency = 9.540749                       (Unspecified)
+average_hops = 2.172358                       (Unspecified)
+reception_rate = 0.069695
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.10, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 0, experiment = 3
+packets_injected = 159534                       (Unspecified)
+packets_received = 159523                       (Unspecified)
+average_packet_queueing_latency = 2.010362                       (Unspecified)
+average_packet_network_latency = 7.630586                       (Unspecified)
+average_packet_latency = 9.640948                       (Unspecified)
+average_hops = 2.170138                       (Unspecified)
+reception_rate = 0.0997019
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.13, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 0, experiment = 3
+packets_injected = 207433                       (Unspecified)
+packets_received = 207423                       (Unspecified)
+average_packet_queueing_latency = 2.018421                       (Unspecified)
+average_packet_network_latency = 7.746094                       (Unspecified)
+average_packet_latency = 9.764515                       (Unspecified)
+average_hops = 2.168270                       (Unspecified)
+reception_rate = 0.129639
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.16, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 0, experiment = 3
+packets_injected = 255471                       (Unspecified)
+packets_received = 255459                       (Unspecified)
+average_packet_queueing_latency = 2.030318                       (Unspecified)
+average_packet_network_latency = 7.904787                       (Unspecified)
+average_packet_latency = 9.935105                       (Unspecified)
+average_hops = 2.172623                       (Unspecified)
+reception_rate = 0.159662
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.19, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 0, experiment = 3
+packets_injected = 303310                       (Unspecified)
+packets_received = 303303                       (Unspecified)
+average_packet_queueing_latency = 2.044131                       (Unspecified)
+average_packet_network_latency = 8.080969                       (Unspecified)
+average_packet_latency = 10.125099                       (Unspecified)
+average_hops = 2.168017                       (Unspecified)
+reception_rate = 0.189564
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.22, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 0, experiment = 3
+packets_injected = 351518                       (Unspecified)
+packets_received = 351500                       (Unspecified)
+average_packet_queueing_latency = 2.069360                       (Unspecified)
+average_packet_network_latency = 8.340523                       (Unspecified)
+average_packet_latency = 10.409883                       (Unspecified)
+average_hops = 2.164472                       (Unspecified)
+reception_rate = 0.219688
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.25, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 0, experiment = 3
+packets_injected = 399446                       (Unspecified)
+packets_received = 399426                       (Unspecified)
+average_packet_queueing_latency = 2.104906                       (Unspecified)
+average_packet_network_latency = 8.731317                       (Unspecified)
+average_packet_latency = 10.836222                       (Unspecified)
+average_hops = 2.163402                       (Unspecified)
+reception_rate = 0.249641
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.28, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 0, experiment = 3
+packets_injected = 447735                       (Unspecified)
+packets_received = 447716                       (Unspecified)
+average_packet_queueing_latency = 2.248602                       (Unspecified)
+average_packet_network_latency = 9.418663                       (Unspecified)
+average_packet_latency = 11.667265                       (Unspecified)
+average_hops = 2.159981                       (Unspecified)
+reception_rate = 0.279822
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.31, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 0, experiment = 3
+packets_injected = 495657                       (Unspecified)
+packets_received = 495629                       (Unspecified)
+average_packet_queueing_latency = 3.025927                       (Unspecified)
+average_packet_network_latency = 10.755761                       (Unspecified)
+average_packet_latency = 13.781688                       (Unspecified)
+average_hops = 2.150732                       (Unspecified)
+reception_rate = 0.309768
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.34, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 0, experiment = 3
+packets_injected = 541267                       (Unspecified)
+packets_received = 541219                       (Unspecified)
+average_packet_queueing_latency = 443.252343                       (Unspecified)
+average_packet_network_latency = 13.523788                       (Unspecified)
+average_packet_latency = 456.776131                       (Unspecified)
+average_hops = 2.139424                       (Unspecified)
+reception_rate = 0.338262
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.37, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 0, experiment = 3
+packets_injected = 570626                       (Unspecified)
+packets_received = 570577                       (Unspecified)
+average_packet_queueing_latency = 2563.173468                       (Unspecified)
+average_packet_network_latency = 15.930250                       (Unspecified)
+average_packet_latency = 2579.103718                       (Unspecified)
+average_hops = 2.144168                       (Unspecified)
+reception_rate = 0.356611
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.01, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 1, experiment = 4
+packets_injected = 15755                       (Unspecified)
+packets_received = 15753                       (Unspecified)
+average_packet_queueing_latency = 2.000254                       (Unspecified)
+average_packet_network_latency = 7.370660                       (Unspecified)
+average_packet_latency = 9.370913                       (Unspecified)
+average_hops = 2.172983                       (Unspecified)
+reception_rate = 0.00984563
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.04, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 1, experiment = 4
+packets_injected = 63661                       (Unspecified)
+packets_received = 63658                       (Unspecified)
+average_packet_queueing_latency = 2.001634                       (Unspecified)
+average_packet_network_latency = 7.453753                       (Unspecified)
+average_packet_latency = 9.455387                       (Unspecified)
+average_hops = 2.176883                       (Unspecified)
+reception_rate = 0.0397863
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.07, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 1, experiment = 4
+packets_injected = 111515                       (Unspecified)
+packets_received = 111512                       (Unspecified)
+average_packet_queueing_latency = 2.005336                       (Unspecified)
+average_packet_network_latency = 7.537969                       (Unspecified)
+average_packet_latency = 9.543305                       (Unspecified)
+average_hops = 2.172851                       (Unspecified)
+reception_rate = 0.069695
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.10, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 1, experiment = 4
+packets_injected = 159534                       (Unspecified)
+packets_received = 159523                       (Unspecified)
+average_packet_queueing_latency = 2.010400                       (Unspecified)
+average_packet_network_latency = 7.636278                       (Unspecified)
+average_packet_latency = 9.646678                       (Unspecified)
+average_hops = 2.170935                       (Unspecified)
+reception_rate = 0.0997019
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.13, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 1, experiment = 4
+packets_injected = 207433                       (Unspecified)
+packets_received = 207423                       (Unspecified)
+average_packet_queueing_latency = 2.018551                       (Unspecified)
+average_packet_network_latency = 7.759356                       (Unspecified)
+average_packet_latency = 9.777908                       (Unspecified)
+average_hops = 2.169432                       (Unspecified)
+reception_rate = 0.129639
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.16, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 1, experiment = 4
+packets_injected = 255471                       (Unspecified)
+packets_received = 255459                       (Unspecified)
+average_packet_queueing_latency = 2.030862                       (Unspecified)
+average_packet_network_latency = 7.935367                       (Unspecified)
+average_packet_latency = 9.966229                       (Unspecified)
+average_hops = 2.174568                       (Unspecified)
+reception_rate = 0.159662
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.19, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 1, experiment = 4
+packets_injected = 303310                       (Unspecified)
+packets_received = 303303                       (Unspecified)
+average_packet_queueing_latency = 2.044764                       (Unspecified)
+average_packet_network_latency = 8.134591                       (Unspecified)
+average_packet_latency = 10.179355                       (Unspecified)
+average_hops = 2.170575                       (Unspecified)
+reception_rate = 0.189564
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.22, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 1, experiment = 4
+packets_injected = 351518                       (Unspecified)
+packets_received = 351500                       (Unspecified)
+average_packet_queueing_latency = 2.070506                       (Unspecified)
+average_packet_network_latency = 8.458236                       (Unspecified)
+average_packet_latency = 10.528743                       (Unspecified)
+average_hops = 2.168344                       (Unspecified)
+reception_rate = 0.219688
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.25, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 1, experiment = 4
+packets_injected = 399446                       (Unspecified)
+packets_received = 399427                       (Unspecified)
+average_packet_queueing_latency = 2.107920                       (Unspecified)
+average_packet_network_latency = 8.963916                       (Unspecified)
+average_packet_latency = 11.071835                       (Unspecified)
+average_hops = 2.167710                       (Unspecified)
+reception_rate = 0.249642
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.28, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 1, experiment = 4
+packets_injected = 447735                       (Unspecified)
+packets_received = 447716                       (Unspecified)
+average_packet_queueing_latency = 2.230392                       (Unspecified)
+average_packet_network_latency = 9.859346                       (Unspecified)
+average_packet_latency = 12.089738                       (Unspecified)
+average_hops = 2.163061                       (Unspecified)
+reception_rate = 0.279822
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.31, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 1, experiment = 4
+packets_injected = 495657                       (Unspecified)
+packets_received = 495628                       (Unspecified)
+average_packet_queueing_latency = 2.660782                       (Unspecified)
+average_packet_network_latency = 11.509057                       (Unspecified)
+average_packet_latency = 14.169839                       (Unspecified)
+average_hops = 2.149350                       (Unspecified)
+reception_rate = 0.309767
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.34, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 1, experiment = 4
+packets_injected = 543806                       (Unspecified)
+packets_received = 543756                       (Unspecified)
+average_packet_queueing_latency = 10.284707                       (Unspecified)
+average_packet_network_latency = 14.490062                       (Unspecified)
+average_packet_latency = 24.774768                       (Unspecified)
+average_hops = 2.130053                       (Unspecified)
+reception_rate = 0.339848
+--------------------------------
+Running experiment with the following parameters: injection rate = 0.37, synthetic type = hotspot, topology = Mesh_longrange, routing algorithm = 5, adaptive = 1, wormhole = 1, vcs per vnet = 2, buffer per ctrl vc = 1, escape-routing = -1, matrix = None, sensor = 1, experiment = 4
+packets_injected = 575156                       (Unspecified)
+packets_received = 575108                       (Unspecified)
+average_packet_queueing_latency = 2262.823353                       (Unspecified)
+average_packet_network_latency = 19.941362                       (Unspecified)
+average_packet_latency = 2282.764715                       (Unspecified)
+average_hops = 2.125881                       (Unspecified)
+reception_rate = 0.359442
+--------------------------------

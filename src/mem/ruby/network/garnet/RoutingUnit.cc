@@ -580,11 +580,11 @@ std::vector < std::pair<int, int> >
 RoutingUnit::outportsComputeHiRy(RouteInfo route, int inport, int invc) {
     std::vector <std::pair <int, int> > candidates;
     int cur_weight = m_in_per_vc_weight_table[inport][invc];
-/*    std::cerr << "In: " << invc << std::endl;
-    std::cerr << "cur_weight: " << cur_weight << std::endl << "src: " << m_router->get_id() << std::endl << "dest: ";
-    for (auto u : route.net_dest.getAllDest())
-        std::cerr << u << ' ';
-    std::cerr << std::endl;*/
+    // std::cerr << "In: " << invc << std::endl;
+    // std::cerr << "cur_weight: " << cur_weight << std::endl << "src: " << m_router->get_id() << std::endl << "dest: ";
+    // for (auto u : route.net_dest.getAllDest())
+    //     std::cerr << u << ' ';
+    // std::cerr << std::endl;
     int num_ports = m_router -> get_num_outports(), num_vc = m_router->get_vc_per_vnet();
     for (int outport = 0; outport < num_ports; outport++) {
         for (int outvc = 0; outvc < num_vc; outvc++) {
