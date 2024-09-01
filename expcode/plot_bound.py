@@ -10,7 +10,7 @@ def visualize(df, name):
     plt.plot(df["Injection Rate"], df["Injection Rate"], label=f"injection rate", linestyle='--')
     plt.xlabel("Injection Rate(packets/node/cycle)", fontsize=14)
     plt.legend(prop={'size': 12})  # 设置图例字体大小
-    plt.savefig(f"plots/{name}.png")
+    plt.savefig(f"plots/{name}.png", dpi = 300)
 
 if __name__ == '__main__':
     data = []

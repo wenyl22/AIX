@@ -40,6 +40,7 @@ def latency_throughput(df, name, synthetic_type):
             continue
 
         axes[0].plot(subset["Injection Rate"], subset["Latency"], marker=marker, linestyle=linestyle, color=color, alpha=0.5)
+        axes[0].set_ylim(5, 30)
         axes[0].set_xlabel("Injection Rate(packets/node/cycle)")
         axes[0].set_ylabel("Average Packet Latency(ticks)")
         axes[0].set_title("Latency-InjectionRate Curve")
@@ -70,7 +71,7 @@ def latency_throughput(df, name, synthetic_type):
         if buffer <= congestion_sensor:
             continue
         axins.plot(subset["Injection Rate"], subset["Latency"], marker=marker, linestyle=linestyle, color=color, alpha=0.5)
-    axins.set_xlim(0.0, 0.20)
+    axins.set_xlim(0.0, 0.10)
     if synthetic_type == "transpose":
         lower = 6
         upper = 12
@@ -91,7 +92,7 @@ def latency_throughput(df, name, synthetic_type):
     mark_inset(axes[0], axins, loc1=2, loc2=4, fc="none", ec="0.5")
 
     #plt.tight_layout(rect=[0, 0, 1, 0.96])
-    plt.savefig(f"plots/{name}_{synthetic_type}.png")
+    plt.savefig(f"plots/{name}_{synthetic_type}.png", dpi=300) 
     plt.close()
 
 if __name__ == '__main__':
@@ -123,7 +124,6 @@ if __name__ == '__main__':
                         buffer = part.split(" = ")[1]
             elif "average_packet_latency" in line:
                 latency = float(line.strip().split(" = ")[1].split("(")[0])
-                latency = min(latency, 1000)
             elif "packets_received" in line:
                 throughput = float(line.strip().split(" = ")[1].split("(")[0])
             elif "average_hops" in line:

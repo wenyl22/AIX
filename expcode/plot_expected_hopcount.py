@@ -62,6 +62,6 @@ def main():
 
     plt.xticks(rotation=45)
     plt.tight_layout()
-    plt.savefig(f'plots/{args.name}.png')
+    plt.savefig(f'plots/{args.name}.png', dpi = 300)
 if __name__ == '__main__':
     main()
